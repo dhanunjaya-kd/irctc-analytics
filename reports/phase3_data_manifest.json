@@ -1,0 +1,22 @@
+{
+ "data/processed/cleaned/booking_passengers.csv": "ff58fc938c1aa203c537b1db2f4c9f358cf7c5b8067e5365b43b3394e9f84530",
+ "data/processed/cleaned/bookings.csv": "45404593757383998f225649cb0da5f5aeb4a753ee0f173b470be8756a4815c0",
+ "data/processed/cleaned/calendar.csv": "724ff77f493956cd9160a885d399cfa48c1082cdbbf292f82d421028f51b6400",
+ "data/processed/cleaned/cancellations.csv": "873e818f8a3b4fd528625ef723c8ac3615a41b5f1d8a89870df10d5c0418299e",
+ "data/processed/cleaned/routes.csv": "b580ab52cb0468be4c633ea23858413f94c5cba15b465d274caefc8d8ced4d97",
+ "data/processed/cleaned/seat_capacity.csv": "34ddf3c63897cbd3e426ea5b153cc9bdd0ac63235d1e70e2e090f924584cc54e",
+ "data/processed/cleaned/stations.csv": "e27adcb3c542836d295d0d1fcd22fbae0cad755075ef94b3e1f652dd66f4ae67",
+ "data/processed/cleaned/train_operations.csv": "b4cef2c5fdede3e606130a5d911b2d410115f0df9e0c06c898367f72d85b78ee",
+ "data/processed/cleaned/train_stops.csv": "d5923b849076b720402173f83231ec050b4377525db1072a3e934a3bb7686f30",
+ "data/processed/cleaned/trains.csv": "f8a522d112eb4e01b7a3377f935779a964c181d99534d572d9853c8aba2078c8",
+ "data/raw/synthetic/booking_passengers.csv": "bca5ff55fd134f5dc12a081b97b57a501b5b6cb535f5a0a315da4b8b633ae116",
+ "data/raw/synthetic/bookings.csv": "ce6ac3a293f5fea8f3b3a2e6a614668d83c8be3da8893fdbc886a2fd2e0e04b6",
+ "data/raw/synthetic/calendar.csv": "724ff77f493956cd9160a885d399cfa48c1082cdbbf292f82d421028f51b6400",
+ "data/raw/synthetic/cancellations.csv": "17c2e1eddac9cb7b4f9560cb8eab9ed9b6eda69711daa20612f908a058c8a714",
+ "data/raw/synthetic/routes.csv": "b580ab52cb0468be4c633ea23858413f94c5cba15b465d274caefc8d8ced4d97",
+ "data/raw/synthetic/seat_capacity.csv": "d07d39d441de127ce900e01ff92fec64ee7d3688a108680a614ad650bf7e27c8",
+ "data/raw/synthetic/stations.csv": "e27adcb3c542836d295d0d1fcd22fbae0cad755075ef94b3e1f652dd66f4ae67",
+ "data/raw/synthetic/train_operations.csv": "aad50ab9c213be259270fe29d7f958e16bc826897e2aa15d847a7c331b37156f",
+ "data/raw/synthetic/train_stops.csv": "d5923b849076b720402173f83231ec050b4377525db1072a3e934a3bb7686f30",
+ "data/raw/synthetic/trains.csv": "f8a522d112eb4e01b7a3377f935779a964c181d99534d572d9853c8aba2078c8"
+}

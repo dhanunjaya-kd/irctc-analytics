@@ -1,0 +1,32 @@
+kpi_key,kpi,value,unit,numerator,denominator,scope,data_origin
+total_bookings,Total Bookings,201182.0,bookings,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+total_passengers,Total Passengers,405200.0,passengers,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+confirmed_bookings,Confirmed Booking Count (all passengers Confirmed),146020.0,bookings,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+mixed_bookings,Mixed Booking Count,4625.0,bookings,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+cancelled_bookings,Cancelled Booking Count,26619.0,bookings,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+cancelled_passengers,Cancelled Passengers,55980.0,passengers,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+passenger_cancellation_rate,Cancellation Rate (passenger-based),0.13815399802566633,share,55980,405200,full cleaned dataset (768 simulated runs),SYNTHETIC
+booking_cancellation_rate,Booking Cancellation Rate (companion),0.1323130299927429,share,26619,201182,full cleaned dataset (768 simulated runs),SYNTHETIC
+gross_value,Gross Booking Value,612966953.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+refund_total,Refund Amount,107083527.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+refund_passenger,Refund Amount: Passenger events,71884437.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+refund_system,Refund Amount: System events,35199090.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+retained_charges,Retained Cancellation Charges,9656744.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+net_value,Net Booking Value,505883426.0,INR,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+avg_fare_per_passenger,Average Fare per passenger,1512.751611549852,INR,612966953.0,405200,full cleaned dataset (768 simulated runs),SYNTHETIC
+avg_fare_per_booking,Average Fare per booking (secondary),3046.828011452317,INR,612966953.0,201182,full cleaned dataset (768 simulated runs),SYNTHETIC
+wl_demand,Waiting-List Demand (initially waitlisted passengers),36876.0,passengers,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+wl_cleared,Waitlisted passengers later Confirmed or RAC,7087.0,passengers,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+wl_clearance_rate,Waitlist Clearance Rate,0.19218461872220413,share,7087,36876,full cleaned dataset (768 simulated runs),SYNTHETIC
+wl_uncleared,Uncleared Waitlist Passengers (final Waitlisted),24200.0,passengers,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+seat_supply,Available Seats (capacity),426384.0,seats,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+booked_seats,Booked Seats (Confirmed + 0.5 x RAC),313345.5,seat-equivalents,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+occupancy,Seat Occupancy %,0.7348903805020827,share,313345.5,426384,full cleaned dataset (768 simulated runs),SYNTHETIC
+confirmed_occupancy,Confirmed Occupancy %,0.7075101317122594,share,301671,426384,full cleaned dataset (768 simulated runs),SYNTHETIC
+waitlist_pressure,Waitlist Pressure %,0.056756351082592214,share,24200,426384,full cleaned dataset (768 simulated runs),SYNTHETIC
+simulated_runs,Simulated train runs,768.0,runs,,,full cleaned dataset (768 simulated runs),SYNTHETIC
+bookings_per_run,Bookings per Simulated Run,261.9557291666667,bookings/run,201182,768,full cleaned dataset (768 simulated runs),SYNTHETIC
+passengers_per_run,Passengers per Simulated Run,527.6041666666666,passengers/run,405200,768,full cleaned dataset (768 simulated runs),SYNTHETIC
+otp,On-Time Performance %,0.7476510067114094,share,557,745,full cleaned dataset (768 simulated runs),SYNTHETIC
+avg_delay,Average Delay (early = 0),19.02013422818792,minutes,14170.0,745,full cleaned dataset (768 simulated runs),SYNTHETIC
+delayed_runs,Delayed Train Runs,188.0,runs,,,full cleaned dataset (768 simulated runs),SYNTHETIC

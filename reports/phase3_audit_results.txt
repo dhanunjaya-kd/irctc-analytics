@@ -1,0 +1,263 @@
+Phase 3 review audit results (read-only checks; nothing in the deliverables or the data was modified)
+Generated: 2026-09-30T19:52Z | script: python/tests/audit_phase3.py (sections: search, inventory, static, pivot, labels, docs, coverage, lo, kpidefs, sample, visual)
+Rendered images used for visual inspection were viewed during the review and are kept only in the git-ignored scratch folder.
+
+===== search =====
+Places searched: current project text files, Phase 1 ZIP, Phase 2 delta ZIP, /mnt/transcripts, /mnt/user-data/uploads (empty)
+  - BRD.md | and outcome | Report reconciles raw to cleaned row counts | 2 | | AC-6 | Excel workbook has the six required sheets and the required functions; unsupported items come with exact instructions | Workbook ins
+  - build_excel_workbook.py | text_wrap=True)); ws.set_row(6 + i, 30)     ws.merge_range(17, 0, 17, 6, "How to refresh: the Data_* sheets are static extracts of data/sample/excel and data/processed/derived. Regenerate them with
+  - build_phase3.py | ()     step("4/6 cleaning exercises workbook"); ex.main()     step("5/6 Google Sheets templates"); gs.main()     if data_manifest() != json.loads(MANIFEST.read_text()):
+  - audit_phase3.py | e("\ ", " ")         for m in re.finditer(r"(?i)(six|\b6\b)[^ ]{0,40}(required|sheets?)|required[^ ]{0,30}sheets?", text):             hits.append((label, text[max(0, m.start(
+  - audit_phase3.py | ut.append("Result: only the two requirement lines above exist (BRD AC-6 and the project-plan Phase 3 row). No sheet names, order or specification, and no list of 'required functions', appear anywhere.")
+  - project_plan.md | the raw-to-clean row movement | | **3. Excel and Sheets** | Workbook (6 required sheets), Power Query M scripts, PivotTable instructions, 3 Google Sheets templates | Recalculate
+  - project_plan.md | eports/phase2_validation.txt` | | **3. Excel and Sheets** | Workbook (6 required sheets), Power Query M scripts, PivotTable instructions, 3 Google Sheets templates | Recalculate
+  - transcripts:2026-09-29-15-22-41-irctc-analytics-phase2-build | he raw-to-clean row movement |\ | **3. Excel and Sheets** | Workbook (6 required sheets), Power Query M scripts, PivotTable instructions, 3 Google Sheets templates | Recalculate
+  - transcripts:2026-09-29-15-22-41-irctc-analytics-phase2-build | and outcome | Report reconciles raw to cleaned row counts | 2 |\ | AC-6 | Excel workbook has the six required sheets and the required functions; unsupported items come with exact instructions | Workbook ins
+Result: only the two requirement lines above exist (BRD AC-6 and the project-plan Phase 3 row). No sheet names, order or specification, and no list of 'required functions', appear anywhere.
+
+===== inventory =====
+Phase 3 ZIP entries: 61; integrity ok: True; entries differing from disk or missing: []
+deliverable files required: 23; present on disk: 23; present in ZIP: 23; .pq scripts: 14
+
+===== static =====
+[MAIN] excel/IRCTC_Booking_Analytics_Workbook.xlsx  2587 KB | zip ok=True | XML parts well-formed=True []
+     sheets(14): README, KPI_Definitions, Dashboard, Monthly_Aggregates, Cancellation_Refund, Occupancy_Demand, KPI_Calc, Validation, Parameters, Data_Bookings, Data_Passengers, Data_Cancellations, Data_ClassRuns, Data_Runs
+     formulas=63733 (shared-formula refs=0) maxlen=254 maxnest=4 | #REF! literals=0 | refs to missing sheets=[] | definedNames=5
+     data validations=3 conditional formats=5 merged ranges=24 charts=8 drawings=3 pivot tables=0 pivot caches=0
+     calcPr={'calcId': '124519', 'fullCalcOnLoad': '1'}
+     distinct functions (17): ABS, AND, COUNTA, COUNTIF, COUNTIFS, IF, INT, ISERROR, ISNUMBER, LOOKUP, MAX, ROUND, SEARCH, SUM, SUMIFS, SUMPRODUCT, TEXT
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+[PIVOT] excel/IRCTC_KPI_Pivot_Dashboard.xlsx  2128 KB | zip ok=True | XML parts well-formed=True []
+     sheets(13): README, Dashboard, PT_1_Status_by_Class, PT_2_Monthly, PT_3_Lead_Cancellation, PT_4_Refunds, PT_5_Occupancy, PT_6_Route_Waitlist, PT_7_Booking_Status, Fact_Passengers, Fact_Events, Fact_ClassRuns, Fact_Bookings
+     formulas=24 (shared-formula refs=0) maxlen=48 maxnest=1 | #REF! literals=0 | refs to missing sheets=[] | definedNames=4
+     data validations=0 conditional formats=0 merged ranges=11 charts=2 drawings=5 pivot tables=7 pivot caches=4
+     calcPr={'iterateCount': '100', 'refMode': 'A1', 'iterate': 'false', 'iterateDelta': '0.0001'}
+     distinct functions (3): COUNTIF, IF, SUM
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+[EXERCISES] excel/IRCTC_Data_Cleaning_Exercises.xlsx  668 KB | zip ok=True | XML parts well-formed=True []
+     sheets(19): README, Exercises, Answer_Key, Validation_Checks, Lookup_Stations, Lookup_Status, Lookup_Class, Raw_Bookings, Raw_Passengers, Raw_Cancellations, Raw_Capacity, Raw_Operations, Work_Bookings, Work_Passengers, Work_Cancellations, Work_Capacity, Work_Operations, Clean_Bookings_Solution, Clean_Passengers_Solution
+     formulas=38593 (shared-formula refs=0) maxlen=281 maxnest=9 | #REF! literals=0 | refs to missing sheets=[] | definedNames=6
+     data validations=0 conditional formats=2 merged ranges=11 charts=0 drawings=0 pivot tables=0 pivot caches=0
+     calcPr={'calcId': '124519', 'fullCalcOnLoad': '1'}
+     distinct functions (34): ABS, AND, COUNTIF, COUNTIFS, DATE, DATEVALUE, DAY, EXACT, IF, IFERROR, INDEX, INT, ISNUMBER, ISTEXT, LEFT, LEN, LOWER, MATCH, MAX, MID, MIN, MONTH, NOT, OR, RIGHT, ROW, SUBSTITUTE, SUM, SUMIF, SUMPRODUCT, TIMEVALUE, TRIM, UPPER, VALUE
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+[GS_KPI] google_sheets/KPI_Tracker_Template.xlsx  31 KB | zip ok=True | XML parts well-formed=True []
+     sheets(6): Instructions, Inputs_Monthly, KPI_Tracker, Targets, Charts, Settings
+     formulas=694 (shared-formula refs=0) maxlen=166 maxnest=4 | #REF! literals=0 | refs to missing sheets=[] | definedNames=0
+     data validations=7 conditional formats=1 merged ranges=12 charts=3 drawings=1 pivot tables=0 pivot caches=0
+     calcPr={'calcId': '124519', 'fullCalcOnLoad': '1'}
+     distinct functions (4): COUNT, IF, INDEX, OR
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+[GS_CANCEL] google_sheets/Cancellation_Refund_Tracker_Template.xlsx  23 KB | zip ok=True | XML parts well-formed=True []
+     sheets(5): Instructions, Inputs_Monthly, Analysis, Lead_Time, Thresholds
+     formulas=401 (shared-formula refs=0) maxlen=95 maxnest=3 | #REF! literals=0 | refs to missing sheets=[] | definedNames=0
+     data validations=0 conditional formats=2 merged ranges=10 charts=2 drawings=2 pivot tables=0 pivot caches=0
+     calcPr={'calcId': '124519', 'fullCalcOnLoad': '1'}
+     distinct functions (1): IF
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+[GS_OCC] google_sheets/Occupancy_Waitlist_Tracker_Template.xlsx  47 KB | zip ok=True | XML parts well-formed=True []
+     sheets(6): Instructions, Settings, Inputs_Class_Month, Analysis, By_Class, Month_x_Class
+     formulas=2008 (shared-formula refs=0) maxlen=464 maxnest=3 | #REF! literals=0 | refs to missing sheets=[] | definedNames=0
+     data validations=2 conditional formats=1 merged ranges=11 charts=1 drawings=1 pivot tables=0 pivot caches=0
+     calcPr={'calcId': '124519', 'fullCalcOnLoad': '1'}
+     distinct functions (3): IF, SUM, SUMIFS
+     functions newer than Excel 2007 (need _xlfn prefix / not portable): none
+
+FORMULA_LIBRARY.md: functions documented but not used in any workbook: []
+FORMULA_LIBRARY.md: functions used in workbooks but not named in the library: ['COUNT', 'COUNTA', 'DATEVALUE', 'EXACT', 'IF', 'IFERROR', 'ISERROR', 'ISTEXT', 'LEFT', 'LEN', 'MAX', 'MID', 'MIN', 'NOT', 'OR', 'RIGHT', 'ROUND', 'SEARCH', 'SUMIF', 'TIMEVALUE']
+
+===== pivot =====
+workbook.xml pivotCaches: 4 -> ['1', '2', '3', '4']
+  cache 1: source sheet='Fact_Passengers' ref=A1:O23566 (sheet exists=True) cacheFields=15 records=23565 refreshOnLoad=None
+  cache 2: source sheet='Fact_Events' ref=A1:I2260 (sheet exists=True) cacheFields=9 records=2259 refreshOnLoad=None
+  cache 3: source sheet='Fact_ClassRuns' ref=A1:K144 (sheet exists=True) cacheFields=11 records=143 refreshOnLoad=None
+  cache 4: source sheet='Fact_Bookings' ref=A1:I11653 (sheet exists=True) cacheFields=9 records=11652 refreshOnLoad=None
+  pivotTable1.xml: name=Pivot_1_Status_by_Class cacheId=1 (cache declared=True) location=A5:F12 dataFields=1 dataOnRows=None
+  pivotTable2.xml: name=Pivot_2_Monthly cacheId=1 (cache declared=True) location=A5:C105 dataFields=4 dataOnRows=None
+  pivotTable3.xml: name=Pivot_3_Lead_Cancellation cacheId=1 (cache declared=True) location=A5:C17 dataFields=2 dataOnRows=None
+  pivotTable4.xml: name=Pivot_4_Refunds cacheId=2 (cache declared=True) location=A5:D31 dataFields=1 dataOnRows=None
+  pivotTable5.xml: name=Pivot_5_Occupancy cacheId=3 (cache declared=True) location=A5:C23 dataFields=3 dataOnRows=None
+  pivotTable6.xml: name=Pivot_6_Route_Waitlist cacheId=1 (cache declared=True) location=A5:C95 dataFields=3 dataOnRows=None
+  pivotTable7.xml: name=Pivot_7_Booking_Status cacheId=4 (cache declared=True) location=A5:G12 dataFields=1 dataOnRows=None
+
+===== labels =====
+[MAIN] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     README                       synthetic=True  sampling=True  data_origin_col=False
+     KPI_Definitions              synthetic=False sampling=False data_origin_col=False
+     Dashboard                    synthetic=True  sampling=True  data_origin_col=False
+     Monthly_Aggregates           synthetic=True  sampling=True  data_origin_col=False
+     Cancellation_Refund          synthetic=True  sampling=True  data_origin_col=False
+     Occupancy_Demand             synthetic=True  sampling=True  data_origin_col=False
+     KPI_Calc                     synthetic=False sampling=False data_origin_col=False
+     Validation                   synthetic=False sampling=False data_origin_col=False
+     Parameters                   synthetic=False sampling=False data_origin_col=False
+     Data_Bookings                synthetic=False sampling=False data_origin_col=False
+     Data_Passengers              synthetic=False sampling=False data_origin_col=False
+     Data_Cancellations           synthetic=False sampling=False data_origin_col=False
+     Data_ClassRuns               synthetic=False sampling=False data_origin_col=False
+     Data_Runs                    synthetic=False sampling=False data_origin_col=False
+     chart titles: chart1.xml: 'Bookings per simulated run by journey month (sampled simulation) bookings per run' label=True | chart2.xml: 'Occupancy and waitlist pressure by month (simulated capacity)' label=False | chart3.xml: 'Passenger final status by class (sample)' label=True | chart4.xml: 'R
+[PIVOT] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     README                       synthetic=True  sampling=True  data_origin_col=False
+     Dashboard                    synthetic=True  sampling=True  data_origin_col=False
+     PT_1_Status_by_Class         synthetic=False sampling=False data_origin_col=False
+     PT_2_Monthly                 synthetic=False sampling=False data_origin_col=False
+     PT_3_Lead_Cancellation       synthetic=False sampling=False data_origin_col=False
+     PT_4_Refunds                 synthetic=False sampling=False data_origin_col=False
+     PT_5_Occupancy               synthetic=False sampling=False data_origin_col=False
+     PT_6_Route_Waitlist          synthetic=False sampling=False data_origin_col=False
+     PT_7_Booking_Status          synthetic=False sampling=False data_origin_col=False
+     Fact_Passengers              synthetic=False sampling=False data_origin_col=False
+     Fact_Events                  synthetic=False sampling=False data_origin_col=False
+     Fact_ClassRuns               synthetic=False sampling=False data_origin_col=False
+     Fact_Bookings                synthetic=False sampling=False data_origin_col=False
+     chart titles: chart1.xml: 'Passengers by class and final status (sample, synthetic)' label=True | chart2.xml: 'Refund amount by month and event type, INR (sample, synthetic)' label=True
+[EXERCISES] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     README                       synthetic=True  sampling=True  data_origin_col=False
+     Exercises                    synthetic=False sampling=False data_origin_col=False
+     Answer_Key                   synthetic=False sampling=True  data_origin_col=False
+     Validation_Checks            synthetic=False sampling=False data_origin_col=False
+     Lookup_Stations              synthetic=False sampling=False data_origin_col=False
+     Lookup_Status                synthetic=False sampling=False data_origin_col=False
+     Lookup_Class                 synthetic=False sampling=False data_origin_col=False
+     Raw_Bookings                 synthetic=True  sampling=False data_origin_col=True
+     Raw_Passengers               synthetic=True  sampling=False data_origin_col=True
+     Raw_Cancellations            synthetic=True  sampling=False data_origin_col=True
+     Raw_Capacity                 synthetic=True  sampling=False data_origin_col=True
+     Raw_Operations               synthetic=True  sampling=False data_origin_col=True
+     Work_Bookings                synthetic=False sampling=False data_origin_col=False
+     Work_Passengers              synthetic=False sampling=False data_origin_col=False
+     Work_Cancellations           synthetic=False sampling=False data_origin_col=False
+     Work_Capacity                synthetic=False sampling=False data_origin_col=False
+     Work_Operations              synthetic=False sampling=False data_origin_col=False
+     Clean_Bookings_Solution      synthetic=False sampling=False data_origin_col=False
+     Clean_Passengers_Solution    synthetic=False sampling=False data_origin_col=False
+[GS_KPI] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     Instructions                 synthetic=True  sampling=True  data_origin_col=False
+     Inputs_Monthly               synthetic=True  sampling=True  data_origin_col=False
+     KPI_Tracker                  synthetic=True  sampling=True  data_origin_col=False
+     Targets                      synthetic=True  sampling=True  data_origin_col=False
+     Charts                       synthetic=True  sampling=True  data_origin_col=False
+     Settings                     synthetic=True  sampling=True  data_origin_col=False
+     chart titles: chart1.xml: 'Bookings per simulated run (synthetic)' label=True | chart2.xml: 'Seat occupancy % and waitlist pressure % (synthetic)' label=True | chart3.xml: 'On-time performance % (synthetic)' label=True
+[GS_CANCEL] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     Instructions                 synthetic=True  sampling=True  data_origin_col=False
+     Inputs_Monthly               synthetic=True  sampling=True  data_origin_col=False
+     Analysis                     synthetic=True  sampling=True  data_origin_col=False
+     Lead_Time                    synthetic=True  sampling=True  data_origin_col=False
+     Thresholds                   synthetic=True  sampling=True  data_origin_col=False
+     chart titles: chart1.xml: 'Refunds by event type, INR (synthetic)' label=True | chart2.xml: 'Passenger cancellation rate by lead time (synthetic)' label=True
+[GS_OCC] sheet: synthetic-label / sampling-label / data_origin-column (first 8 rows)
+     Instructions                 synthetic=True  sampling=True  data_origin_col=False
+     Settings                     synthetic=True  sampling=True  data_origin_col=False
+     Inputs_Class_Month           synthetic=True  sampling=True  data_origin_col=False
+     Analysis                     synthetic=True  sampling=True  data_origin_col=False
+     By_Class                     synthetic=True  sampling=True  data_origin_col=False
+     Month_x_Class                synthetic=True  sampling=True  data_origin_col=False
+     chart titles: chart1.xml: 'Occupancy and waitlist pressure by class (synthetic, simulated capacity)' label=True
+
+===== docs =====
+README.md                              '19,708'= 1  'sampled'= 1  'synthetic'= 3  'network-wide'= 1
+docs/BRD.md                            '19,708'= 0  'sampled'= 0  'synthetic'=11  'network-wide'= 0
+docs/KPI_consistency_matrix.md         '19,708'= 1  'sampled'= 2  'synthetic'= 2  'network-wide'= 1
+docs/KPI_definitions.md                '19,708'= 0  'sampled'= 2  'synthetic'= 3  'network-wide'= 0
+docs/assumptions.md                    '19,708'= 3  'sampled'= 3  'synthetic'=13  'network-wide'= 1
+docs/data_dictionary.md                '19,708'= 0  'sampled'= 0  'synthetic'= 9  'network-wide'= 0
+docs/data_quality_report.md            '19,708'= 0  'sampled'= 0  'synthetic'= 5  'network-wide'= 0
+docs/data_sources.md                   '19,708'= 1  'sampled'= 2  'synthetic'=13  'network-wide'= 1
+docs/project_plan.md                   '19,708'= 1  'sampled'= 1  'synthetic'=16  'network-wide'= 0
+excel/FORMULA_LIBRARY.md               '19,708'= 0  'sampled'= 0  'synthetic'= 0  'network-wide'= 0
+excel/SETUP_INSTRUCTIONS.md            '19,708'= 1  'sampled'= 1  'synthetic'= 2  'network-wide'= 1
+google_sheets/SETUP_INSTRUCTIONS.md    '19,708'= 1  'sampled'= 2  'synthetic'= 1  'network-wide'= 1
+
+===== coverage =====
+  cancellation_by_lead_and_class.csv                      referenced by a workbook builder or M script: True
+  monthly_class_occupancy.csv                             referenced by a workbook builder or M script: True
+  monthly_kpis.csv                                        referenced by a workbook builder or M script: True
+  occupancy_class_runs.csv                                referenced by a workbook builder or M script: True
+  refund_events_summary.csv                               referenced by a workbook builder or M script: False
+  route_summary.csv                                       referenced by a workbook builder or M script: False
+  train_runs.csv                                          referenced by a workbook builder or M script: False
+  excel sample: booking_passengers.csv                    referenced by a workbook builder or M script: True
+  excel sample: bookings.csv                              referenced by a workbook builder or M script: True
+  excel sample: cancellations.csv                         referenced by a workbook builder or M script: True
+  excel sample: seat_capacity.csv                         referenced by a workbook builder or M script: True
+  excel sample: train_operations.csv                      referenced by a workbook builder or M script: True
+  keyword presence in the four analysis sheets of the main workbook (headers/labels):
+     Dashboard              route=- train=Y weekday=- season=- holiday=- travel class=Y lead=- month=Y refund=Y delay=- occupancy=Y waitlist=Y
+     Monthly_Aggregates     route=- train=Y weekday=- season=- holiday=- travel class=Y lead=- month=Y refund=Y delay=Y occupancy=Y waitlist=Y
+     Cancellation_Refund    route=- train=Y weekday=- season=- holiday=- travel class=Y lead=Y month=Y refund=Y delay=- occupancy=- waitlist=Y
+     Occupancy_Demand       route=- train=Y weekday=- season=- holiday=- travel class=Y lead=- month=Y refund=- delay=- occupancy=Y waitlist=Y
+
+===== lo =====
+[MAIN] opened in LibreOffice=True | sheets=14 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+[PIVOT] opened in LibreOffice=True | sheets=13 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+[EXERCISES] opened in LibreOffice=True | sheets=19 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+[GS_KPI] opened in LibreOffice=True | sheets=6 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+[GS_CANCEL] opened in LibreOffice=True | sheets=5 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+[GS_OCC] opened in LibreOffice=True | sheets=6 | formula-error cells after recalculation=0 []
+     stored (cached) values vs fresh recalculation: 0 differing cells []
+
+CROSS-CHECK main KPI_Calc (sample) vs pivot dashboard cards: 14 of 14 KPIs identical []
+CROSS-CHECK main Monthly_Aggregates vs Google KPI tracker: 264 cells compared, 0 differing
+CROSS-CHECK main Monthly_Aggregates vs Google cancellation tracker: 96 cells compared, 0 differing
+CROSS-CHECK full-dataset occupancy: main Monthly total row=0.7348903805 | Google occupancy tracker 'All classes'=0.7348903805 | identical=True
+CROSS-CHECK main Monthly total row vs reports/kpi_reference_values.csv: all identical
+
+===== kpidefs =====
+Total Bookings             doc denominator: (none: count/value KPI)                                                                           | workbook (total_bookings): count
+Total Passengers           doc denominator: (none: count/value KPI)                                                                           | workbook (total_passengers): count
+Confirmed Booking Count    doc denominator: (none: count/value KPI)                                                                           | workbook (confirmed_bookings): count
+Cancelled Booking Count    doc denominator: (none: count/value KPI)                                                                           | workbook (cancelled_bookings): count
+Cancellation Rate          doc denominator: Total Passengers in the same filter context, meaning all four final statuses                      | workbook (passenger_cancellation_rate): Total Passengers (all four final statuses)
+Gross Booking Value        doc denominator: (none: count/value KPI)                                                                           | workbook (gross_value): n/a
+Refund Amount              doc denominator: (none: count/value KPI)                                                                           | workbook (refund_total): n/a
+Net Booking Value          doc denominator: (none: count/value KPI)                                                                           | workbook (net_value): n/a
+Average Fare               doc denominator: Total Passengers, all statuses (consistent with the gross numerator)                              | workbook (avg_fare_per_passenger): Total Passengers
+Seat Occupancy %           doc denominator: total seats from `seat_capacity` for the **same train, journey date and class** as the passenge   | workbook (occupancy): Available Seats (same train, date, class)
+Waiting-List Demand        doc denominator: (none: count/value KPI)                                                                           | workbook (wl_demand): count
+On-Time Performance %      doc denominator: train runs with a non-NULL `arrival_delay_min` in the same filter context                         | workbook (otp): Runs with a recorded arrival delay
+Average Delay              doc denominator: train runs with a non-NULL `arrival_delay_min`                                                    | workbook (avg_delay): Runs with a recorded arrival delay
+Monthly Booking Growth     doc denominator: the previous month's Total Bookings; `NULL` if it is 0 or the month is the first in the data      | workbook (None): not in Excel workbook (see report)
+Route-Level Demand         doc denominator: (none: count/value KPI)                                                                           | workbook (None): not in Excel workbook (see report)
+
+===== sample =====
+Class-runs by travel class
+              full %  sample %  diff pp
+travel_class                           
+3A              32.1      31.5     -0.6
+SL              31.5      32.9      1.4
+2S              18.2      19.6      1.4
+2A              15.4      14.0     -1.4
+CC               1.5       2.1      0.6
+1A               1.3       0.0     -1.3
+Runs by train type
+            full %  sample %  diff pp
+train_type                           
+Express       72.9      72.9      0.0
+Superfast     23.3      27.1      3.8
+Premium        3.8       0.0     -3.8
+Runs by weekday
+           full %  sample %  diff pp
+run_date                            
+Monday       20.6      27.1      6.5
+Tuesday      17.8      12.5     -5.3
+Wednesday    17.4      10.4     -7.0
+Saturday     12.6      16.7      4.1
+Friday       12.5       8.3     -4.2
+Sunday       10.8      10.4     -0.4
+Thursday      8.2      14.6      6.4
+coverage: trains 32 of 52 | routes 29 of 40 | 1A class-runs 0 of 29 | Premium runs 0 of 29
+KPI sample vs full: occupancy 0.7038 vs 0.7349 (-4.2%); passenger_cancellation_rate 0.1314 vs 0.1382 (-4.9%); wl_clearance_rate 0.1808 vs 0.1922 (-5.9%); avg_fare_per_passenger 1430.0154 vs 1512.7516 (-5.5%); otp 0.7826 vs 0.7477 (+4.7%)
+
+===== visual =====
+PIVOT Dashboard chart anchored A2:E15; KPI table occupies A4:E20 -> overlap=True
+PIVOT Dashboard chart anchored A16:E32; KPI table occupies A4:E20 -> overlap=True
+PIVOT xl/charts/chart1.xml: legend present=False, series=4
+PIVOT xl/charts/chart2.xml: legend present=False, series=2
+MAIN Dashboard with class filter = 1A (no 1A class-runs in the sample): Total bookings=0.0; Total passengers=0.0; Fully confirmed bookings=0.0; Mixed-status bookings=0.0; Cancellation rate=blank; Booking cancellation rate=blank | error cells=0

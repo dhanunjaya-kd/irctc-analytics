@@ -1,0 +1,43 @@
+Phase 3 validation run: 2026-10-02T17:34Z
+Command: python python/tests/test_phase3_excel.py    (build: python python/src/build_phase3.py)
+Environment: Python 3.12.3, pandas 3.0.2, LibreOffice 24.2 via UNO (real recalculation), seed 42
+
+== A. Test suite ==
+PASS  test_original_data_is_unchanged
+PASS  test_phase3_code_never_writes_to_the_original_data_folders
+PASS  test_derived_datasets_reconcile_with_the_cleaned_data
+PASS  test_kpi_reference_matches_independent_pandas_calculations
+PASS  test_excel_sample_is_run_complete_and_balanced_by_month
+PASS  test_main_workbook_has_the_expected_sheets_and_features
+PASS  test_main_workbook_recalculates_without_errors_and_validation_passes
+PASS  test_main_workbook_excel_kpis_equal_python_reference_within_tolerance
+PASS  test_dashboard_class_filter_scenario_matches_python_for_sl
+PASS  test_denominators_are_shown_on_dashboard_cards
+PASS  test_tampering_with_data_is_detected_by_the_workbook
+PASS  test_pivot_workbook_has_real_pivottables_that_match_pandas
+PASS  test_pivot_dashboard_cards_equal_python_sample_kpis
+PASS  test_exercise_formulas_reproduce_the_independent_detection_counts
+PASS  test_exercise_answer_key_detects_a_changed_raw_value
+PASS  test_exercise_raw_sheets_preserve_raw_values
+PASS  test_google_sheets_templates_match_python_and_have_no_errors
+PASS  test_google_sheets_templates_use_only_portable_functions
+PASS  test_power_query_scripts_are_structurally_sound
+PASS  test_sampling_limitation_is_documented_everywhere_it_matters
+PASS  test_kpi_consistency_matrix_covers_all_fifteen_kpis_and_states_pending_tools
+PASS  test_manual_setup_instructions_cover_every_feature_that_cannot_be_generated
+
+22 passed, 0 failed, 22 total
+
+== B. Key results (measured in this run) ==
+- Main workbook: 24 of 24 Validation checks PASS after a real LibreOffice recalculation; overall cell reads 'ALL 24 CHECKS PASS'
+- Main workbook: 36 of 36 KPI_Calc rows PASS (Excel formula vs independent Python reference); formula error cells: 0
+- Main workbook: dashboard class-filter scenario (SL) matched Python on all 15 cards; deliberate tampering was detected (overall cell then reads 'FAILURES: 1')
+- Exercises workbook: 29 of 29 formula counts equal the independent detection counts; summary: ALL FORMULA COUNTS MATCH (29 of 29; 1 manual); validation checks: ALL 11 CHECKS PASS
+- Exercises workbook: changing one raw value flipped the matching Answer_Key row from PASS to FAIL (detected)
+- Sample (48 of 768 runs) versus full dataset: occupancy 0.7038 vs 0.7349 (-4.2%); passenger_cancellation_rate 0.1314 vs 0.1382 (-4.9%); wl_clearance_rate 0.1808 vs 0.1922 (-5.9%); avg_fare_per_passenger 1430.0154 vs 1512.7516 (-5.5%)
+- Google Sheets templates: 3 recalculated, compared with Python monthly values, formula error cells: 0
+
+== C. Not verified in this environment ==
+- Workbooks were not opened in Microsoft Excel or Google Sheets; PivotTables were authored and checked with LibreOffice.
+- Power Query M scripts were not executed (no Power Query engine); only their structure was linted.
+- XLOOKUP cannot be evaluated by LibreOffice 24.2 (#NAME?) and is not used in any verified cell.
