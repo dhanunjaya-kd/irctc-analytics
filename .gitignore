@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Secrets / local config (never commit credentials)
+.env
+.env.*
+*.pgpass
+config.local.*
+secrets/
+
+# Large generated data: regenerate with the scripts in python/src (a small sample is kept in data/sample)
+data/raw/synthetic/*.csv
+data/raw/synthetic/*.parquet
+data/processed/cleaned/*.csv
+data/interim/
+!data/sample/*.csv
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Phase 3 scratch files (two-pass workbook builds, test logs)
+reports/phase3_work/
