@@ -1,5 +1,5 @@
 """Read-only Phase 3 review audit helpers (no workbook or data file is modified). Sections are run from the review session; output goes to reports/phase3_work/."""
-import html, re, sys, zipfile, pathlib
+import html, os, re, sys, zipfile, pathlib
 import xml.etree.ElementTree as ET
 from collections import Counter
 
@@ -262,11 +262,12 @@ def search_audit():
             for n in zz.namelist():
                 if n.endswith((".md", ".txt", ".py")):
                     scan(f"{zn}:{n}", zz.read(n).decode("utf-8", errors="ignore"))
-    for d in ("/mnt/transcripts", "/mnt/user-data/uploads"):
+    extra = [d for d in os.environ.get("IRCTC_AUDIT_EXTRA_DIRS", "").split(os.pathsep) if d]      # optional extra folders (the original run also searched the build environment's transcript and upload folders)
+    for d in extra:
         for f in pathlib.Path(d).rglob("*"):
             if f.is_file():
                 scan(f"{d}:{f.name}", f.read_text(encoding="utf-8", errors="ignore"))
-    out.append("Places searched: current project text files, Phase 1 ZIP, Phase 2 delta ZIP, /mnt/transcripts, /mnt/user-data/uploads (empty)")
+    out.append("Places searched: current project text files, Phase 1 ZIP, Phase 2 delta ZIP" + (", " + ", ".join(extra) if extra else "") + " (the original run also searched the build environment's transcript archive and uploads folder; the uploads folder was empty)")
     seen = set()
     for label, sn in hits:
         key = re.sub(r"\W+", " ", sn)[:90]

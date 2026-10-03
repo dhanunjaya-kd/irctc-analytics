@@ -3,7 +3,7 @@ Generated: 2026-09-30T19:52Z | script: python/tests/audit_phase3.py (sections: s
 Rendered images used for visual inspection were viewed during the review and are kept only in the git-ignored scratch folder.
 
 ===== search =====
-Places searched: current project text files, Phase 1 ZIP, Phase 2 delta ZIP, /mnt/transcripts, /mnt/user-data/uploads (empty)
+Places searched: current project text files, Phase 1 ZIP, Phase 2 delta ZIP, the build environment's transcript archive and uploads folder (the uploads folder was empty)
   - BRD.md | and outcome | Report reconciles raw to cleaned row counts | 2 | | AC-6 | Excel workbook has the six required sheets and the required functions; unsupported items come with exact instructions | Workbook ins
   - build_excel_workbook.py | text_wrap=True)); ws.set_row(6 + i, 30)     ws.merge_range(17, 0, 17, 6, "How to refresh: the Data_* sheets are static extracts of data/sample/excel and data/processed/derived. Regenerate them with
   - build_phase3.py | ()     step("4/6 cleaning exercises workbook"); ex.main()     step("5/6 Google Sheets templates"); gs.main()     if data_manifest() != json.loads(MANIFEST.read_text()):

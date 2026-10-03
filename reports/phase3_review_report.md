@@ -17,7 +17,7 @@ The findings below describe the state before this pass.
 
 ## 1. The original six required sheets
 
-**Searched:** 57 current project text files, the Phase 1 ZIP (9 text files), the Phase 2 delta ZIP (20), the saved transcript and journal (`/mnt/transcripts`), and the uploads folder (empty).
+**Searched:** 57 current project text files, the Phase 1 ZIP (9 text files), the Phase 2 delta ZIP (20), the saved build transcript and journal, and the build environment's uploads folder (empty).
 
 **Found (the only traces):**
 
@@ -153,7 +153,9 @@ Exceptions: KPI 15 (Route-Level Demand) is not in the main workbook, and the mon
 5. **Excel, Google Sheets and Power Query execution checks:** cannot be performed here (section 3).
 6. **SQL, Power BI and Tableau KPI consistency:** not applicable until Phases 4, 6 and 7.
 
-## 8. Recommended correction round (proposed; not started)
+## 8. Recommended correction round (historical proposal; acted on in the final correction pass)
+
+*Status:* this proposal was acted on in the final correction pass. The items that were fixed and the items deliberately left unchanged are listed in "Status after the final correction pass" near the top of this report; the paragraph below is the original proposal, kept for the record.
 
 Fix O-2, O-3, O-6, O-7, O-8, O-9, O-10 and, if you want it in Phase 3, O-4 and O-5. Then re-run `python python/src/build_phase3.py`, `python python/tests/test_phase3_excel.py`, the Phase 1 and 2 regressions and `python python/tests/audit_phase3.py`, re-render the dashboards, and issue a new delta ZIP. Changing the sample changes the sample-based values in the main and pivot workbooks, so the validation results would be regenerated, not assumed.
 
@@ -162,6 +164,8 @@ Fix O-2, O-3, O-6, O-7, O-8, O-9, O-10 and, if you want it in Phase 3, O-4 and O
 `reports/phase3_review_report.md` (this file), `reports/phase3_audit_results.txt`, `python/tests/audit_phase3.py`. They can be added to the final ZIP after approval.
 
 ## 10. Final approval checklist
+
+*Historical checklist, written before the correction pass described near the top of this report. Phase 3 has since been corrected as described there, and Phases 4 to 8 have been built on it. The items that need Microsoft Excel, Google Sheets or Power Query remain open (pending local verification).*
 
 **Verified**
 - [x] All 8 deliverables exist and are in the ZIP (hash-verified)
@@ -182,4 +186,4 @@ Fix O-2, O-3, O-6, O-7, O-8, O-9, O-10 and, if you want it in Phase 3, O-4 and O
 - [ ] Opened and checked in Microsoft Excel (including pivots)
 - [ ] Imported and checked in Google Sheets
 - [ ] Power Query scripts run in Excel
-- [ ] Final approval of Phase 3 (Phase 4 has not been started)
+- [ ] Final approval of Phase 3 (historical: Phase 4 has since been built)
