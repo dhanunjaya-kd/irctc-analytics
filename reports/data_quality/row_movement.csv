@@ -1,0 +1,11 @@
+table,raw_rows,clean_rows,duplicates,orphans,family_rejected,other
+stations,32,32,0,0,0,0
+routes,40,40,0,0,0,0
+trains,52,52,0,0,0,0
+train_stops,203,203,0,0,0,0
+calendar,975,975,0,0,0,0
+bookings,202943,201182,1010,0,751,0
+booking_passengers,407287,405200,505,101,1481,0
+cancellations,44448,43923,220,132,173,0
+seat_capacity,2303,2285,18,0,0,0
+train_operations,768,768,0,0,0,0

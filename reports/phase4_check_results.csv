@@ -1,0 +1,73 @@
+check_id,category,description,violations,passed
+BR-01,BUSINESS RULE,passenger initial_status and final_status are in their documented domains,0,t
+BR-02,BUSINESS RULE,"booking_status equals the roll-up of passenger final_status (single status, else Mixed)",0,t
+BR-03a,BUSINESS RULE,num_passengers equals the number of passenger rows,0,t
+BR-03b,BUSINESS RULE,total_fare equals SUM(passenger fare_amount),0,t
+BR-03c,BUSINESS RULE,passenger_seq runs 1..n within each booking,0,t
+BR-04a,BUSINESS RULE,booking date is on or before the journey date and lead time is 0..120 days,0,t
+BR-04b,BUSINESS RULE,booking_ts is before chart preparation (first departure minus 4 hours),0,t
+BR-04c,BUSINESS RULE,journey_date inside the approved window 2024-09-01 .. 2026-08-31,0,t
+BR-05a,BUSINESS RULE,booking journey_date falls on a scheduled run day of the train,0,t
+BR-05b,BUSINESS RULE,each booking train/date has a train_operations row,0,t
+BR-05c,BUSINESS RULE,seat_capacity rows fall on run days and have a train_operations row,0,t
+BR-06a,BUSINESS RULE,booking route_id equals the train route,0,t
+BR-06b,BUSINESS RULE,boarding and destination stations equal the route origin and destination,0,t
+BR-06c,BUSINESS RULE,boarding and destination stations differ,0,t
+BR-07,BUSINESS RULE,each booking train/date/class has a seat_capacity row,0,t
+BR-08a,BUSINESS RULE,Confirmed passengers <= total_seats - rac_berths,0,t
+BR-08b,BUSINESS RULE,RAC passengers <= 2 x rac_berths (none where rac_berths = 0),0,t
+BR-08c,BUSINESS RULE,Confirmed + RAC weight x RAC <= total_seats (occupancy <= 100%),0,t
+BR-08d,BUSINESS RULE,Waitlisted passengers <= wl_limit,0,t
+BR-09a,BUSINESS RULE,total_seats = coaches_attached x seats_per_coach,0,t
+BR-09b,BUSINESS RULE,seats_per_coach equals the class standard,0,t
+BR-10a,BUSINESS RULE,cancellation_id is set exactly when final_status is Cancelled or Waitlisted,0,t
+BR-10b,BUSINESS RULE,Passenger events link Cancelled passengers; System events link Waitlisted passengers,0,t
+BR-10c,BUSINESS RULE,linked passengers belong to the event booking,0,t
+BR-11a,BUSINESS RULE,cancelled_passengers equals the number of linked passengers,0,t
+BR-11b,BUSINESS RULE,original_fare_amount equals SUM(linked passenger fares),0,t
+BR-11c,BUSINESS RULE,refund + charge = original fare; refund and charge >= 0,0,t
+BR-11d,BUSINESS RULE,status_at_cancellation and type are in domain; System events are Waitlisted,0,t
+BR-11e,BUSINESS RULE,every cancellation event has at least one linked passenger,0,t
+BR-12,BUSINESS RULE,booking_ts <= cancellation_ts <= chart preparation time,0,t
+BR-13,BUSINESS RULE,"train stops: sequence 1..n, distance strictly increasing, terminals match the route, no arrival at origin / departure at terminus",0,t
+BR-14,BUSINESS RULE,"no personally identifiable columns or values (name, e-mail, phone, address, ID numbers)",0,t
+BR-15,BUSINESS RULE,"fares > 0, passengers per booking 1..6",0,t
+BR-16,BUSINESS RULE,"station_code unique, upper-case, trimmed",0,t
+BR-17,BUSINESS RULE,no demotion between initial and final passenger status,0,t
+DOM-age,DOMAIN,"age_band in {Child, Adult, Senior, Unknown}",0,t
+DOM-class,DOMAIN,"travel_class in {1A, 2A, 3A, SL, CC, 2S} for bookings and capacity",0,t
+DOM-delay,DOMAIN,non-null delays inside -60..1440 minutes,0,t
+DOM-origin,LABELLING,every row of every core table is labelled data_origin = SYNTHETIC,0,t
+ROWS-phase2-booking_passengers,ROWS,core.booking_passengers row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-bookings,ROWS,core.bookings row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-calendar,ROWS,core.calendar row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-cancellations,ROWS,core.cancellations row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-routes,ROWS,core.routes row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-seat_capacity,ROWS,core.seat_capacity row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-stations,ROWS,core.stations row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-train_operations,ROWS,core.train_operations row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-train_stops,ROWS,core.train_stops row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-phase2-trains,ROWS,core.trains row count equals the Phase 2 cleaned row count (row_movement.csv),0,t
+ROWS-stg-core-booking_passengers,ROWS,rows loaded into core.booking_passengers equal the rows staged from the CSV file,0,t
+ROWS-stg-core-bookings,ROWS,rows loaded into core.bookings equal the rows staged from the CSV file,0,t
+ROWS-stg-core-calendar,ROWS,rows loaded into core.calendar equal the rows staged from the CSV file,0,t
+ROWS-stg-core-cancellations,ROWS,rows loaded into core.cancellations equal the rows staged from the CSV file,0,t
+ROWS-stg-core-routes,ROWS,rows loaded into core.routes equal the rows staged from the CSV file,0,t
+ROWS-stg-core-seat_capacity,ROWS,rows loaded into core.seat_capacity equal the rows staged from the CSV file,0,t
+ROWS-stg-core-stations,ROWS,rows loaded into core.stations equal the rows staged from the CSV file,0,t
+ROWS-stg-core-train_operations,ROWS,rows loaded into core.train_operations equal the rows staged from the CSV file,0,t
+ROWS-stg-core-train_stops,ROWS,rows loaded into core.train_stops equal the rows staged from the CSV file,0,t
+ROWS-stg-core-trains,ROWS,rows loaded into core.trains equal the rows staged from the CSV file,0,t
+SIZE-bookings,SIZE,"at least 100,000 bookings",0,t
+SIZE-months,SIZE,at least 24 months of journeys,0,t
+SIZE-stations,SIZE,at least 30 stations,0,t
+SIZE-trains,SIZE,at least 50 trains,0,t
+STRUCT-check-constraints,STRUCTURE,55 CHECK constraints exist in core,0,t
+STRUCT-constraints-validated,STRUCTURE,every core constraint is validated,0,t
+STRUCT-core-tables,STRUCTURE,10 core tables exist,0,t
+STRUCT-foreign-keys,STRUCTURE,18 foreign keys exist in core,0,t
+STRUCT-nullable-columns,STRUCTURE,"only the 6 documented columns are nullable (arrival_time, departure_time, holiday_name, peak_period_name, arrival_delay_min, cancellation_id)",0,t
+STRUCT-primary-keys,STRUCTURE,every core table has a primary key (10),0,t
+STRUCT-schemas,STRUCTURE,"schemas stg, core, analytics and qa exist",0,t
+STRUCT-secondary-indexes,STRUCTURE,13 secondary indexes (ix_*) exist in core,0,t
+STRUCT-unique-constraints,STRUCTURE,8 UNIQUE constraints exist in core,0,t

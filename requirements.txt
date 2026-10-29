@@ -1,0 +1,30 @@
+# Core analytics stack. Phase 1 environment check found pandas 3.0.2, numpy 2.4.4,
+# matplotlib 3.10.8, seaborn 0.13.2, scipy 1.17.1, scikit-learn 1.8.0, openpyxl 3.1.5,
+# xlsxwriter 3.2.9 already installed; ranges below are deliberately looser than that.
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+seaborn>=0.13
+scipy>=1.11
+scikit-learn>=1.4
+statsmodels>=0.14
+
+# Excel output
+openpyxl>=3.1
+xlsxwriter>=3.1
+
+# PostgreSQL access (Phase 4+)
+psycopg2-binary>=2.9
+SQLAlchemy>=2.0
+
+# Notebooks and testing
+jupyter>=1.0
+nbformat>=5.9
+nbconvert>=7.0
+nbclient>=0.10
+ipykernel>=6.29
+pytest>=8.0
+
+# Phase 3 rebuild and verification of the Excel workbooks needs LibreOffice with its Python bridge (not installable with pip):
+#   sudo apt-get install libreoffice-calc python3-uno
+# Without it you can still open the delivered workbooks; only rebuilding, real recalculation checks and the PivotTables need LibreOffice.

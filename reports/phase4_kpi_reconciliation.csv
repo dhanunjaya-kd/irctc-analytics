@@ -1,0 +1,32 @@
+kpi_key,kpi,unit,reference_value,sql_value,abs_diff,tolerance,passed
+avg_delay,Average Delay (early = 0),minutes,19.02013422818792,19.0201342281879195,0.0000000000000005,0.0001,t
+avg_fare_per_booking,Average Fare per booking (secondary),INR,3046.828011452317,3046.8280114523168077,0.0000000000001923,0.005,t
+avg_fare_per_passenger,Average Fare per passenger,INR,1512.751611549852,1512.7516115498519250,0.0000000000000750,0.005,t
+booked_seats,Booked Seats (Confirmed + 0.5 x RAC),seat-equivalents,313345.5,313345.5,0.0,0.0001,t
+booking_cancellation_rate,Booking Cancellation Rate (companion),share,0.1323130299927429,0.13231302999274288952,0.00000000000000001048,0.00005,t
+bookings_per_run,Bookings per Simulated Run,bookings/run,261.9557291666667,261.9557291666666667,0.0000000000000333,0.0001,t
+cancelled_bookings,Cancelled Booking Count,bookings,26619.0,26619,0.0,0,t
+cancelled_passengers,Cancelled Passengers,passengers,55980.0,55980,0.0,0,t
+confirmed_bookings,Confirmed Booking Count (all passengers Confirmed),bookings,146020.0,146020,0.0,0,t
+confirmed_occupancy,Confirmed Occupancy %,share,0.7075101317122594,0.70751013171225937183,0.00000000000000002817,0.00005,t
+delayed_runs,Delayed Train Runs,runs,188.0,188,0.0,0,t
+gross_value,Gross Booking Value,INR,612966953.0,612966953.00,0.00,0.005,t
+mixed_bookings,Mixed Booking Count,bookings,4625.0,4625,0.0,0,t
+net_value,Net Booking Value,INR,505883426.0,505883426.00,0.00,0.005,t
+occupancy,Seat Occupancy %,share,0.7348903805020827,0.73489038050208262974,0.00000000000000007026,0.00005,t
+otp,On-Time Performance %,share,0.7476510067114094,0.74765100671140939597,0.00000000000000000403,0.00005,t
+passenger_cancellation_rate,Cancellation Rate (passenger-based),share,0.13815399802566633,0.13815399802566633761,0.00000000000000000761,0.00005,t
+passengers_per_run,Passengers per Simulated Run,passengers/run,527.6041666666666,527.6041666666666667,0.0000000000000667,0.0001,t
+refund_passenger,Refund Amount: Passenger events,INR,71884437.0,71884437.00,0.00,0.005,t
+refund_system,Refund Amount: System events,INR,35199090.0,35199090.00,0.00,0.005,t
+refund_total,Refund Amount,INR,107083527.0,107083527.00,0.00,0.005,t
+retained_charges,Retained Cancellation Charges,INR,9656744.0,9656744.00,0.00,0.005,t
+seat_supply,Available Seats (capacity),seats,426384.0,426384,0.0,0,t
+simulated_runs,Simulated train runs,runs,768.0,768,0.0,0,t
+total_bookings,Total Bookings,bookings,201182.0,201182,0.0,0,t
+total_passengers,Total Passengers,passengers,405200.0,405200,0.0,0,t
+waitlist_pressure,Waitlist Pressure %,share,0.056756351082592214,0.05675635108259221734,0.00000000000000000334,0.00005,t
+wl_clearance_rate,Waitlist Clearance Rate,share,0.19218461872220413,0.19218461872220414362,0.00000000000000001362,0.00005,t
+wl_cleared,Waitlisted passengers later Confirmed or RAC,passengers,7087.0,7087,0.0,0,t
+wl_demand,Waiting-List Demand (initially waitlisted passengers),passengers,36876.0,36876,0.0,0,t
+wl_uncleared,Uncleared Waitlist Passengers (final Waitlisted),passengers,24200.0,24200,0.0,0,t
