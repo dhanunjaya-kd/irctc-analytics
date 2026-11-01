@@ -1,0 +1,37 @@
+rule_id,table,description,rows_in,rows_out,rows_affected,action
+C-01,stations,trim leading/trailing whitespace in text columns,32.0,32,0,values trimmed; no rows removed
+C-01,routes,trim leading/trailing whitespace in text columns,40.0,40,0,values trimmed; no rows removed
+C-01,trains,trim leading/trailing whitespace in text columns,52.0,52,0,values trimmed; no rows removed
+C-01,train_stops,trim leading/trailing whitespace in text columns,203.0,203,0,values trimmed; no rows removed
+C-01,calendar,trim leading/trailing whitespace in text columns,975.0,975,0,values trimmed; no rows removed
+C-01,seat_capacity,trim leading/trailing whitespace in text columns,2285.0,2285,0,values trimmed; no rows removed
+C-01,train_operations,trim leading/trailing whitespace in text columns,768.0,768,0,values trimmed; no rows removed
+C-01,bookings,trim leading/trailing whitespace in text columns,201182.0,201182,0,values trimmed; no rows removed
+C-01,booking_passengers,trim leading/trailing whitespace in text columns,405200.0,405200,0,values trimmed; no rows removed
+C-01,cancellations,trim leading/trailing whitespace in text columns,43923.0,43923,0,values trimmed; no rows removed
+C-02,booking_passengers,"map status labels to canonical spelling (Confirmed, RAC, Waitlisted, Cancelled, Mixed)",405200.0,405200,0,labels normalised; unknown labels kept and caught by validation
+C-02,bookings,"map status labels to canonical spelling (Confirmed, RAC, Waitlisted, Cancelled, Mixed)",201182.0,201182,0,labels normalised; unknown labels kept and caught by validation
+C-02,cancellations,"map status labels to canonical spelling (Confirmed, RAC, Waitlisted, Cancelled, Mixed)",43923.0,43923,0,labels normalised; unknown labels kept and caught by validation
+C-03,booking_passengers,"convert initial_status, final_status, age_band to ordered categorical",405200.0,405200,0,dtype conversion only
+C-03,bookings,"convert booking_status, travel_class to ordered categorical",201182.0,201182,0,dtype conversion only
+C-03,seat_capacity,convert travel_class to ordered categorical,2285.0,2285,0,dtype conversion only
+C-03,cancellations,"convert cancellation_type, status_at_cancellation to ordered categorical",43923.0,43923,0,dtype conversion only
+C-03,trains,convert train_type to ordered categorical,52.0,52,0,dtype conversion only
+C-04,bookings,detect duplicate rows on ['booking_id'],201182.0,201182,0,flagged only; nothing removed (0 expected after Phase 2)
+C-04,booking_passengers,detect duplicate rows on ['passenger_id'],405200.0,405200,0,flagged only; nothing removed (0 expected after Phase 2)
+C-04,cancellations,detect duplicate rows on ['cancellation_id'],43923.0,43923,0,flagged only; nothing removed (0 expected after Phase 2)
+C-04,seat_capacity,"detect duplicate rows on ['train_id', 'journey_date', 'travel_class']",2285.0,2285,0,flagged only; nothing removed (0 expected after Phase 2)
+C-04,train_operations,"detect duplicate rows on ['train_id', 'run_date']",768.0,768,0,flagged only; nothing removed (0 expected after Phase 2)
+C-05,train_operations,"arrival_delay_min is NULL: flag delay_missing, keep NULL",768.0,768,23,retained as NULL; excluded from delay KPIs; not imputed
+C-05,booking_passengers,"age_band is 'Unknown': flag age_missing, keep 'Unknown'",405200.0,405200,1010,retained; no age imputed
+C-06,bookings,"derive journey_month, weekday, is_weekend, season, is_peak, is_holiday, lead_days, lead_bucket, train and route attributes",201182.0,201182,201182,columns added; no rows removed
+C-06,booking_passengers,"derive is_cancelled, is_initial_wl, is_cleared_wl, is_uncleared_wl, seat_equivalent (RAC weight is a configurable assumption)",405200.0,405200,405200,columns added; no rows removed
+C-06,train_operations,"derive journey_month, on_time (NULL where the delay is missing), delay_positive (early = 0)",768.0,768,768,columns added; no rows removed
+C-07,bookings,validation flag flag_nonpositive_fare,201182.0,201182,0,flag counted; rows retained
+C-07,bookings,validation flag flag_lead_out_of_range,201182.0,201182,0,flag counted; rows retained
+C-07,cancellations,validation flag flag_negative_refund,43923.0,43923,0,flag counted; rows retained
+C-08,passenger_fact,build aggregation-ready fact table,,405200,405200,"405,200 rows"
+C-08,booking_fact,build aggregation-ready fact table,,201182,201182,"201,182 rows"
+C-08,event_fact,build aggregation-ready fact table,,43923,43923,"43,923 rows"
+C-08,class_run_fact,build aggregation-ready fact table,,2285,2285,"2,285 rows"
+C-08,run_fact,build aggregation-ready fact table,,768,768,768 rows

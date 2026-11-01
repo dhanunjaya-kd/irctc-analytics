@@ -1,0 +1,245 @@
+Phase 5 (Python analytics) validation report
+Generated: 2026-10-02T17:38Z
+Command: python python/src/run_phase5.py
+Environment: Python 3.12.3, pandas 3.0.2, numpy 2.4.4, scipy 1.17.1
+
+Synthetic data, sampled simulation (768 simulated runs of 19,708 scheduled). Not IRCTC or Indian Railways network-wide data; no forecasts.
+Dataset analysed: the FULL validated cleaned dataset (data/processed/cleaned). The 48-run Excel sample is not used.
+
+== A. Sources, row counts, types, date ranges, relationships ==
+
+stations                    32 rows   7 cols  null cells        0  origin=SYNTHETIC  
+routes                      40 rows   6 cols  null cells        0  origin=SYNTHETIC  
+trains                      52 rows   7 cols  null cells        0  origin=SYNTHETIC  
+train_stops                203 rows   8 cols  null cells      104  origin=SYNTHETIC  
+calendar                   975 rows  17 cols  null cells    1,732  origin=SYNTHETIC  calendar_date: 2024-05-01 to 2026-12-31
+seat_capacity            2,285 rows  10 cols  null cells        0  origin=SYNTHETIC  journey_date: 2024-09-01 to 2026-08-31
+train_operations           768 rows   6 cols  null cells       23  origin=SYNTHETIC  run_date: 2024-09-01 to 2026-08-31
+bookings               201,182 rows  13 cols  null cells        0  origin=SYNTHETIC  journey_date: 2024-09-01 to 2026-08-31; booking_ts: 2024-05-05 to 2026-08-31
+booking_passengers     405,200 rows   9 cols  null cells  325,020  origin=SYNTHETIC  
+cancellations           43,923 rows  10 cols  null cells        0  origin=SYNTHETIC  cancellation_ts: 2024-05-31 to 2026-08-31
+
+Total rows analysed: 654,660 (bookings 201,182; passengers 405,200; cancellation events 43,923; train-class runs 2,285; simulated runs 768)
+Foreign-key relationships (orphan child rows):
+  routes.origin_station_id               -> stations.station_id          orphans=0
+  routes.destination_station_id          -> stations.station_id          orphans=0
+  trains.route_id                        -> routes.route_id              orphans=0
+  train_stops.train_id                   -> trains.train_id              orphans=0
+  train_stops.station_id                 -> stations.station_id          orphans=0
+  seat_capacity.train_id                 -> trains.train_id              orphans=0
+  seat_capacity.journey_date             -> calendar.calendar_date       orphans=0
+  train_operations.train_id              -> trains.train_id              orphans=0
+  train_operations.run_date              -> calendar.calendar_date       orphans=0
+  bookings.train_id                      -> trains.train_id              orphans=0
+  bookings.journey_date                  -> calendar.calendar_date       orphans=0
+  bookings.route_id                      -> routes.route_id              orphans=0
+  bookings.boarding_station_id           -> stations.station_id          orphans=0
+  bookings.destination_station_id        -> stations.station_id          orphans=0
+  booking_passengers.booking_id          -> bookings.booking_id          orphans=0
+  booking_passengers.cancellation_id     -> cancellations.cancellation_id orphans=0
+  cancellations.booking_id               -> bookings.booking_id          orphans=0
+
+Documented gaps (retained, never imputed):
+  train_operations.arrival_delay_min is NULL           23  retained as NULL; excluded from delay KPIs (denominator = runs with a recorded delay)
+  booking_passengers.age_band = 'Unknown'           1,010  retained as 'Unknown'; no age imputed; not used by any KPI
+  booking_passengers.cancellation_id is NULL      325,020  expected: Confirmed and RAC passengers have no refund event
+
+Phase 2 validated counts (reports/data_quality/row_movement.csv) vs Python: bookings=201,182, booking_passengers=405,200, cancellations=43,923
+Phase 4 reference output reports/phase4_check_results.csv: 72 of 72 PostgreSQL data-quality checks passed (built on PostgreSQL 16.15; NOT yet run on PostgreSQL 18.4 / Windows).
+
+== B. Python validation checks ==
+
+PASS  ROWS-stations                      violations=0       stations: row count equals the Phase 2 validated cleaned count (32)
+PASS  ROWS-routes                        violations=0       routes: row count equals the Phase 2 validated cleaned count (40)
+PASS  ROWS-trains                        violations=0       trains: row count equals the Phase 2 validated cleaned count (52)
+PASS  ROWS-train_stops                   violations=0       train_stops: row count equals the Phase 2 validated cleaned count (203)
+PASS  ROWS-calendar                      violations=0       calendar: row count equals the Phase 2 validated cleaned count (975)
+PASS  ROWS-seat_capacity                 violations=0       seat_capacity: row count equals the Phase 2 validated cleaned count (2,285)
+PASS  ROWS-train_operations              violations=0       train_operations: row count equals the Phase 2 validated cleaned count (768)
+PASS  ROWS-bookings                      violations=0       bookings: row count equals the Phase 2 validated cleaned count (201,182)
+PASS  ROWS-booking_passengers            violations=0       booking_passengers: row count equals the Phase 2 validated cleaned count (405,200)
+PASS  ROWS-cancellations                 violations=0       cancellations: row count equals the Phase 2 validated cleaned count (43,923)
+PASS  DUP-pk-stations                    violations=0       stations: primary key ['station_id'] is unique
+PASS  DUP-pk-routes                      violations=0       routes: primary key ['route_id'] is unique
+PASS  DUP-pk-trains                      violations=0       trains: primary key ['train_id'] is unique
+PASS  DUP-pk-train_stops                 violations=0       train_stops: primary key ['train_id', 'stop_sequence'] is unique
+PASS  DUP-pk-calendar                    violations=0       calendar: primary key ['calendar_date'] is unique
+PASS  DUP-pk-seat_capacity               violations=0       seat_capacity: primary key ['capacity_id'] is unique
+PASS  DUP-pk-train_operations            violations=0       train_operations: primary key ['operation_id'] is unique
+PASS  DUP-pk-bookings                    violations=0       bookings: primary key ['booking_id'] is unique
+PASS  DUP-pk-booking_passengers          violations=0       booking_passengers: primary key ['passenger_id'] is unique
+PASS  DUP-pk-cancellations               violations=0       cancellations: primary key ['cancellation_id'] is unique
+PASS  DUP-booking-reference              violations=0       bookings: booking_reference is unique
+PASS  DUP-capacity-run-class             violations=0       seat_capacity: one row per train, date and class
+PASS  DUP-operations-run                 violations=0       train_operations: one row per train and run date
+PASS  DUP-passenger-seq                  violations=0       booking_passengers: one row per booking and passenger_seq
+PASS  DUP-station-code                   violations=0       stations: station_code is unique
+PASS  NULL-stations                      violations=0       stations: no missing values outside the documented nullable columns
+PASS  NULL-routes                        violations=0       routes: no missing values outside the documented nullable columns
+PASS  NULL-trains                        violations=0       trains: no missing values outside the documented nullable columns
+PASS  NULL-train_stops                   violations=0       train_stops: no missing values outside the documented nullable columns
+PASS  NULL-calendar                      violations=0       calendar: no missing values outside the documented nullable columns
+PASS  NULL-seat_capacity                 violations=0       seat_capacity: no missing values outside the documented nullable columns
+PASS  NULL-train_operations              violations=0       train_operations: no missing values outside the documented nullable columns
+PASS  NULL-bookings                      violations=0       bookings: no missing values outside the documented nullable columns
+PASS  NULL-booking_passengers            violations=0       booking_passengers: no missing values outside the documented nullable columns
+PASS  NULL-cancellations                 violations=0       cancellations: no missing values outside the documented nullable columns
+PASS  DATE-parse-calendar                violations=0       calendar: date columns ['calendar_date'] are valid datetimes
+PASS  DATE-parse-seat_capacity           violations=0       seat_capacity: date columns ['journey_date'] are valid datetimes
+PASS  DATE-parse-train_operations        violations=0       train_operations: date columns ['run_date'] are valid datetimes
+PASS  DATE-parse-bookings                violations=0       bookings: date columns ['journey_date', 'booking_ts'] are valid datetimes
+PASS  DATE-parse-cancellations           violations=0       cancellations: date columns ['cancellation_ts'] are valid datetimes
+PASS  DATE-journey-window                violations=0       booking journey dates are inside 2024-09-01 .. 2026-08-31
+PASS  DATE-calendar-coverage             violations=0       every journey, capacity and run date exists in the calendar table
+PASS  DATE-booking-before-journey        violations=0       booking date is on or before the journey date (BR-04)
+PASS  DATE-lead-range                    violations=0       lead time is 0..120 days (BR-04)
+PASS  DATE-booking-before-chart-prep     violations=0       booking_ts is before chart preparation, 4 hours before departure (BR-04)
+PASS  DATE-cancellation-window           violations=0       booking_ts <= cancellation_ts <= chart preparation (BR-12)
+PASS  CAT-travel-class-bookings          violations=0       travel class bookings values are in the documented domain
+PASS  CAT-travel-class-capacity          violations=0       travel class capacity values are in the documented domain
+PASS  CAT-age-band                       violations=0       age band values are in the documented domain
+PASS  CAT-initial-status                 violations=0       initial status values are in the documented domain
+PASS  CAT-final-status                   violations=0       final status values are in the documented domain
+PASS  CAT-booking-status                 violations=0       booking status values are in the documented domain
+PASS  CAT-cancellation-type              violations=0       cancellation type values are in the documented domain
+PASS  CAT-status-at-cancellation         violations=0       status at cancellation values are in the documented domain
+PASS  CAT-train-type                     violations=0       train type values are in the documented domain
+PASS  CAT-season                         violations=0       season values are in the documented domain
+PASS  CAT-region                         violations=0       region values are in the documented domain
+PASS  AMT-fares-positive                 violations=0       passenger fares and booking totals are positive
+PASS  AMT-refund-charge-nonnegative      violations=0       refunds and cancellation charges are not negative
+PASS  AMT-distance-positive              violations=0       route distances and cumulative stop distances are valid
+PASS  AMT-passengers-1-to-6              violations=0       passengers per booking are 1..6
+PASS  CAP-arithmetic                     violations=0       total_seats = coaches_attached x seats_per_coach (BR-09)
+PASS  CAP-class-standard                 violations=0       seats_per_coach equals the class standard (BR-09)
+PASS  CAP-rac-berths                     violations=0       0 <= rac_berths <= total_seats and wl_limit >= 0
+PASS  CAP-confirmed-limit                violations=0       Confirmed passengers <= total_seats - rac_berths (BR-08)
+PASS  CAP-rac-limit                      violations=0       RAC passengers <= 2 x rac_berths (BR-08)
+PASS  CAP-occupancy-at-most-100          violations=0       Confirmed + RAC weight x RAC <= total_seats, so occupancy <= 100% (BR-08)
+PASS  CAP-waitlist-limit                 violations=0       waitlisted passengers <= wl_limit (BR-08)
+PASS  REC-passenger-count                violations=0       num_passengers equals the number of passenger rows (BR-03)
+PASS  REC-fare-sum                       violations=0       booking total_fare equals the sum of passenger fares (BR-03)
+PASS  REC-status-rollup                  violations=0       booking_status is the roll-up of passenger final statuses (BR-02)
+PASS  REC-passenger-sequence             violations=0       passenger_seq runs 1..n within each booking (BR-03)
+PASS  REC-event-passenger-count          violations=0       cancelled_passengers equals the passengers linked to the event (BR-11)
+PASS  REC-event-fare-sum                 violations=0       original_fare_amount equals the linked passengers' fares (BR-11)
+PASS  REC-refund-arithmetic              violations=0       refund + charge = original fare for every event (BR-11)
+PASS  REC-event-booking-match            violations=0       linked passengers belong to the event's booking (BR-10)
+PASS  STAT-cancellation-link             violations=0       cancellation_id is set exactly when final status is Cancelled or Waitlisted (BR-10)
+PASS  STAT-event-type                    violations=0       Passenger events link Cancelled passengers; System events link Waitlisted passengers (BR-10)
+PASS  STAT-no-demotion                   violations=0       no passenger is demoted between initial and final status (BR-17)
+PASS  STAT-system-waitlisted             violations=0       System auto-refund events cover only waitlisted passengers (BR-11)
+PASS  STAT-events-have-passengers        violations=0       every cancellation event has at least one linked passenger (BR-11)
+PASS  REL-run-days                       violations=0       bookings fall on a scheduled run day of the train (BR-05)
+PASS  REL-operations-row                 violations=0       every booking train/date has a train_operations row (BR-05)
+PASS  REL-capacity-row                   violations=0       every booking train/date/class has a seat_capacity row (BR-07)
+PASS  REL-capacity-operations            violations=0       every capacity row has a train_operations row
+PASS  REL-booking-route                  violations=0       booking route equals the train's route (BR-06)
+PASS  REL-booking-stations               violations=0       boarding and destination stations equal the route's origin and destination (BR-06)
+PASS  REL-stop-sequence                  violations=0       train stops are numbered 1..n and distances strictly increase (BR-13)
+PASS  REL-stop-terminals                 violations=0       first and last stop equal the route origin and destination (BR-13)
+PASS  FK-routes.origin_station_id        violations=0       routes.origin_station_id -> stations.station_id: no orphan rows
+PASS  FK-routes.destination_station_id   violations=0       routes.destination_station_id -> stations.station_id: no orphan rows
+PASS  FK-trains.route_id                 violations=0       trains.route_id -> routes.route_id: no orphan rows
+PASS  FK-train_stops.train_id            violations=0       train_stops.train_id -> trains.train_id: no orphan rows
+PASS  FK-train_stops.station_id          violations=0       train_stops.station_id -> stations.station_id: no orphan rows
+PASS  FK-seat_capacity.train_id          violations=0       seat_capacity.train_id -> trains.train_id: no orphan rows
+PASS  FK-seat_capacity.journey_date      violations=0       seat_capacity.journey_date -> calendar.calendar_date: no orphan rows
+PASS  FK-train_operations.train_id       violations=0       train_operations.train_id -> trains.train_id: no orphan rows
+PASS  FK-train_operations.run_date       violations=0       train_operations.run_date -> calendar.calendar_date: no orphan rows
+PASS  FK-bookings.train_id               violations=0       bookings.train_id -> trains.train_id: no orphan rows
+PASS  FK-bookings.journey_date           violations=0       bookings.journey_date -> calendar.calendar_date: no orphan rows
+PASS  FK-bookings.route_id               violations=0       bookings.route_id -> routes.route_id: no orphan rows
+PASS  FK-bookings.boarding_station_id    violations=0       bookings.boarding_station_id -> stations.station_id: no orphan rows
+PASS  FK-bookings.destination_station_id violations=0       bookings.destination_station_id -> stations.station_id: no orphan rows
+PASS  FK-booking_passengers.booking_id   violations=0       booking_passengers.booking_id -> bookings.booking_id: no orphan rows
+PASS  FK-booking_passengers.cancellation_id violations=0       booking_passengers.cancellation_id -> cancellations.cancellation_id: no orphan rows
+PASS  FK-cancellations.booking_id        violations=0       cancellations.booking_id -> bookings.booking_id: no orphan rows
+PASS  ORIGIN-synthetic                   violations=0       every row of every table is labelled data_origin = SYNTHETIC
+PASS  SIZE-bookings                      violations=0       at least 100,000 bookings
+PASS  SIZE-trains                        violations=0       at least 50 trains
+PASS  SIZE-stations                      violations=0       at least 30 stations
+PASS  SIZE-months                        violations=0       at least 24 months of journeys
+
+111/111 checks passed
+
+Cleaning pipeline (reports/phase5_cleaning_log.csv): 36 rule applications; rows removed: 0; values imputed: 0; rows in == rows out for every table.
+
+== C. KPI reconciliation (Python vs reports/kpi_reference_values.csv) ==
+
+PASS  total_bookings                 reference=  201,182.000000  python=  201,182.000000  diff=+0.00e+00
+PASS  total_passengers               reference=  405,200.000000  python=  405,200.000000  diff=+0.00e+00
+PASS  confirmed_bookings             reference=  146,020.000000  python=  146,020.000000  diff=+0.00e+00
+PASS  mixed_bookings                 reference=    4,625.000000  python=    4,625.000000  diff=+0.00e+00
+PASS  cancelled_bookings             reference=   26,619.000000  python=   26,619.000000  diff=+0.00e+00
+PASS  cancelled_passengers           reference=   55,980.000000  python=   55,980.000000  diff=+0.00e+00
+PASS  passenger_cancellation_rate    reference=        0.138154  python=        0.138154  diff=+2.78e-17
+PASS  booking_cancellation_rate      reference=        0.132313  python=        0.132313  diff=+0.00e+00
+PASS  gross_value                    reference=612,966,953.000000  python=612,966,953.000000  diff=+0.00e+00
+PASS  refund_total                   reference=107,083,527.000000  python=107,083,527.000000  diff=+0.00e+00
+PASS  refund_passenger               reference=71,884,437.000000  python=71,884,437.000000  diff=+0.00e+00
+PASS  refund_system                  reference=35,199,090.000000  python=35,199,090.000000  diff=+0.00e+00
+PASS  retained_charges               reference=9,656,744.000000  python=9,656,744.000000  diff=+0.00e+00
+PASS  net_value                      reference=505,883,426.000000  python=505,883,426.000000  diff=+0.00e+00
+PASS  avg_fare_per_passenger         reference=    1,512.751612  python=    1,512.751612  diff=+0.00e+00
+PASS  avg_fare_per_booking           reference=    3,046.828011  python=    3,046.828011  diff=+0.00e+00
+PASS  wl_demand                      reference=   36,876.000000  python=   36,876.000000  diff=+0.00e+00
+PASS  wl_cleared                     reference=    7,087.000000  python=    7,087.000000  diff=+0.00e+00
+PASS  wl_clearance_rate              reference=        0.192185  python=        0.192185  diff=+2.78e-17
+PASS  wl_uncleared                   reference=   24,200.000000  python=   24,200.000000  diff=+0.00e+00
+PASS  seat_supply                    reference=  426,384.000000  python=  426,384.000000  diff=+0.00e+00
+PASS  booked_seats                   reference=  313,345.500000  python=  313,345.500000  diff=+0.00e+00
+PASS  occupancy                      reference=        0.734890  python=        0.734890  diff=+0.00e+00
+PASS  confirmed_occupancy            reference=        0.707510  python=        0.707510  diff=+0.00e+00
+PASS  waitlist_pressure              reference=        0.056756  python=        0.056756  diff=+1.39e-17
+PASS  simulated_runs                 reference=      768.000000  python=      768.000000  diff=+0.00e+00
+PASS  bookings_per_run               reference=      261.955729  python=      261.955729  diff=+0.00e+00
+PASS  passengers_per_run             reference=      527.604167  python=      527.604167  diff=+0.00e+00
+PASS  otp                            reference=        0.747651  python=        0.747651  diff=+0.00e+00
+PASS  avg_delay                      reference=       19.020134  python=       19.020134  diff=+0.00e+00
+PASS  delayed_runs                   reference=      188.000000  python=      188.000000  diff=+0.00e+00
+
+Overall: 31 of 31 KPIs within tolerance (counts exact; INR 0.005; shares 0.00005; per-run and minute values 0.0001).
+Monthly (data/processed/derived/monthly_kpis.csv): 960 of 960 comparisons within tolerance.
+Python vs Phase 4 SQL values (reports/phase4_kpi_reconciliation.csv): 31 of 31 within tolerance.
+Exploratory measures (not approved KPIs, not reconciled): demand_per_seat = 0.9503, bookings_per_seat = 0.4718.
+
+== D. Source-data mutation check ==
+
+PASS: 25 source files (cleaned tables, raw originals, reference outputs) have identical SHA-256, size and modification time before and after the run.
+
+== E. Test suite ==
+Command: python python/tests/test_phase5_python.py    (2026-10-02T17:38Z)
+PASS  test_loading_reads_all_tables_with_expected_dtypes
+PASS  test_row_counts_equal_csv_files_and_phase2_validated_counts
+PASS  test_full_cleaned_dataset_is_used_not_the_excel_sample
+PASS  test_relationships_have_no_orphans_and_origin_is_synthetic
+PASS  test_validation_passes_on_the_cleaned_data
+PASS  test_validation_detects_every_deliberate_corruption
+PASS  test_occupancy_bound_check_catches_an_overfull_run
+PASS  test_validation_never_crashes_on_malformed_input
+PASS  test_unmutated_data_still_passes_after_the_mutation_tests
+PASS  test_cleaning_keeps_every_row_logs_every_rule_and_imputes_nothing
+PASS  test_cleaning_does_not_modify_its_input
+PASS  test_cleaning_normalises_dirty_labels_and_still_removes_nothing
+PASS  test_derived_columns_and_metrics_are_correct
+PASS  test_kpi_formulas_match_a_hand_computed_example
+PASS  test_kpi_ratios_are_nan_not_zero_when_the_denominator_is_zero
+PASS  test_kpi_module_is_independent_of_the_phase3_reference_module
+PASS  test_kpi_reconciliation_with_the_reference_file_passes
+PASS  test_kpi_reconciliation_flags_a_wrong_value_instead_of_forcing_it
+PASS  test_monthly_kpis_reconcile_and_growth_is_correct
+PASS  test_python_kpis_agree_with_the_phase4_sql_values
+PASS  test_statistical_functions_give_known_answers
+PASS  test_statistical_results_are_complete_and_honest
+PASS  test_statistical_findings_agree_with_an_independent_calculation
+PASS  test_eda_tables_are_consistent_with_the_kpis
+PASS  test_entry_point_runs_from_the_project_root
+PASS  test_sixteen_charts_are_generated_with_titles_labels_and_interpretations
+PASS  test_reports_exist_with_required_structure_and_no_overclaiming
+PASS  test_source_data_is_not_modified_by_the_analysis
+PASS  test_notebooks_are_valid_and_execute_without_errors
+PASS  test_documentation_readme_and_requirements_cover_phase5
+PASS  test_phase1_to_phase4_deliverables_are_unchanged
+
+31 passed, 0 failed, 31 total
