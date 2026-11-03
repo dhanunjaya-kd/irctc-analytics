@@ -1,0 +1,76 @@
+/// Grain: one SIMULATED train-class run (2,285). Capacity is simulated.
+table Fact_ClassRun
+	lineageTag: 42607bfd-7191-592a-a31a-39455500c152
+
+	column ClassRunID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: b44c0797-290d-5c51-8b5d-73dd683b98da
+		summarizeBy: none
+		sourceColumn: ClassRunID
+
+	column JourneyDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 0eaf6715-fe3c-5421-b75b-f4f8d58116a2
+		summarizeBy: none
+		sourceColumn: JourneyDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TrainKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 31e2efb5-6dd3-5de7-8bef-ae361d46e9ca
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column ClassKey
+		dataType: string
+		isHidden
+		lineageTag: 5d395ec2-947a-5604-83b1-2710e1206bcc
+		summarizeBy: none
+		sourceColumn: ClassKey
+
+	column Coaches
+		dataType: int64
+		formatString: 0
+		lineageTag: 6539451c-1397-5398-8801-9c40ed8d84a0
+		summarizeBy: none
+		sourceColumn: Coaches
+
+	column TotalSeats
+		dataType: int64
+		formatString: #,0
+		lineageTag: 4372f2f5-54b1-5bf2-aa19-cfff0dcd3fac
+		summarizeBy: none
+		sourceColumn: TotalSeats
+
+	column RacBerths
+		dataType: int64
+		formatString: 0
+		lineageTag: 185e7886-ceb9-5b0a-b3e5-3e2a4615d11f
+		summarizeBy: none
+		sourceColumn: RacBerths
+
+	column WaitlistLimit
+		dataType: int64
+		formatString: 0
+		lineageTag: 0ac220d3-857e-540b-9480-c11f0a289155
+		summarizeBy: none
+		sourceColumn: WaitlistLimit
+
+	partition Fact_ClassRun = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Fact_ClassRun.csv"), [Delimiter = ",", Columns = 8, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ClassRunID", Int64.Type}, {"JourneyDate", type date}, {"TrainKey", Int64.Type}, {"ClassKey", type text}, {"Coaches", Int64.Type}, {"TotalSeats", Int64.Type}, {"RacBerths", Int64.Type}, {"WaitlistLimit", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

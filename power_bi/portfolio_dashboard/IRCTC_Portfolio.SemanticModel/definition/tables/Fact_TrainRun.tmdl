@@ -1,0 +1,56 @@
+/// Grain: one SIMULATED train run (768). Delays are simulated.
+table Fact_TrainRun
+	lineageTag: fd7c32b4-4af5-57cf-87cc-da253178231c
+
+	column RunID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 4d67249b-910a-5fc6-9720-9dbb2a5029c6
+		summarizeBy: none
+		sourceColumn: RunID
+
+	column RunDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 267ec42a-3449-56d3-94ad-5acb68895455
+		summarizeBy: none
+		sourceColumn: RunDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TrainKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 26bd0da3-01cc-5bf2-83af-b508012cf9e7
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column DepartureDelayMin
+		dataType: int64
+		formatString: 0
+		lineageTag: 0f7c9e9e-e96f-5c4b-b966-3b4300ef884f
+		summarizeBy: none
+		sourceColumn: DepartureDelayMin
+
+	/// NULL = missing (23 runs); never imputed
+	column ArrivalDelayMin
+		dataType: int64
+		formatString: 0
+		lineageTag: 616175ef-bf1b-5f3f-9f6f-a3dd9c1d4ae0
+		summarizeBy: none
+		sourceColumn: ArrivalDelayMin
+
+	partition Fact_TrainRun = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Fact_TrainRun.csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"RunID", Int64.Type}, {"RunDate", type date}, {"TrainKey", Int64.Type}, {"DepartureDelayMin", Int64.Type}, {"ArrivalDelayMin", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,50 @@
+/// Travel class (6) with real seats per coach.
+table Dim_Class
+	lineageTag: 0a4e7889-14ca-50f9-9b5b-25094d513d04
+
+	column ClassKey
+		dataType: string
+		isKey
+		lineageTag: ae0920d9-13b0-5575-80a5-b97df734a0e0
+		summarizeBy: none
+		sourceColumn: ClassKey
+
+	column ClassName
+		dataType: string
+		lineageTag: f98e09eb-1383-5cb6-8458-6f3c7435f00d
+		summarizeBy: none
+		sourceColumn: ClassName
+
+	column SeatsPerCoach
+		dataType: int64
+		formatString: 0
+		lineageTag: ad3cfba6-23a5-5f62-a5ad-d2c60d78a574
+		summarizeBy: none
+		sourceColumn: SeatsPerCoach
+
+	column RacModelled
+		dataType: string
+		lineageTag: ad982d0a-e1b2-53c1-992f-11a5c9405784
+		summarizeBy: none
+		sourceColumn: RacModelled
+
+	column ClassOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 33134acb-049e-58bf-a30c-d638e5f42ba4
+		summarizeBy: none
+		sourceColumn: ClassOrder
+
+	partition Dim_Class = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_Class.csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ClassKey", type text}, {"ClassName", type text}, {"SeatsPerCoach", Int64.Type}, {"RacModelled", type text}, {"ClassOrder", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,56 @@
+/// Train (52). Related to Dim_Route (snowflake) so that route filters reach every fact.
+table Dim_Train
+	lineageTag: d22827de-08be-529b-b215-aa2f76ca0495
+
+	column TrainKey
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 50df0476-e7d9-509c-896b-6284e0bfdf58
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column TrainNumber
+		dataType: string
+		lineageTag: 3cf7047b-a1b9-5127-aeb7-7ca3b05ccc7e
+		summarizeBy: none
+		sourceColumn: TrainNumber
+
+	column TrainName
+		dataType: string
+		lineageTag: f049a60e-0ad0-5d07-a3c4-a0479a2d5150
+		summarizeBy: none
+		sourceColumn: TrainName
+
+	column TrainType
+		dataType: string
+		lineageTag: d1bd338e-01b6-571d-98f0-7deb4ed7378f
+		summarizeBy: none
+		sourceColumn: TrainType
+
+	column RunDays
+		dataType: string
+		lineageTag: 663f2fa7-3db0-5f7e-992d-f6f0e14c6068
+		summarizeBy: none
+		sourceColumn: RunDays
+
+	column RouteKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2152fb2b-de74-5a30-b50e-501b04bf27b6
+		summarizeBy: none
+		sourceColumn: RouteKey
+
+	partition Dim_Train = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_Train.csv"), [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"TrainKey", Int64.Type}, {"TrainNumber", type text}, {"TrainName", type text}, {"TrainType", type text}, {"RunDays", type text}, {"RouteKey", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

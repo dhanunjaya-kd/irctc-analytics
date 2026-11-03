@@ -1,0 +1,112 @@
+/// Journey calendar, 2024-09-01 to 2026-08-31 (730 days, contiguous). Marked as the date table.
+table Dim_Date
+	lineageTag: 1345d3d1-c161-5e3b-82ac-9f3f1a4c2a68
+	dataCategory: Time
+
+	column Date
+		dataType: dateTime
+		isKey
+		formatString: yyyy-mm-dd
+		lineageTag: 1bfacc99-83f2-575c-89e0-50cd54bca2d2
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 6f71fac9-84d3-5eda-a001-9d6f0749cf74
+		summarizeBy: none
+		sourceColumn: Year
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 385307cf-e920-52fc-929a-b74a28014924
+		summarizeBy: none
+		sourceColumn: Quarter
+
+	column MonthNumber
+		dataType: int64
+		formatString: 0
+		lineageTag: 61ad4c7b-d6f0-5514-a012-4eed525b17c7
+		summarizeBy: none
+		sourceColumn: MonthNumber
+
+	column MonthName
+		dataType: string
+		lineageTag: 8383d3e7-c8ac-5c1e-b688-44fb8f294cec
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: MonthNumber
+
+	/// YYYY-MM; sorts chronologically as text
+	column YearMonth
+		dataType: string
+		lineageTag: cf78fd97-3a49-5136-abb1-17e15f655f25
+		summarizeBy: none
+		sourceColumn: YearMonth
+
+	column WeekdayName
+		dataType: string
+		lineageTag: 7047e68b-bc17-547d-bee4-4aca6f904bb9
+		summarizeBy: none
+		sourceColumn: WeekdayName
+		sortByColumn: WeekdayNumber
+
+	column WeekdayNumber
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 45e42112-9f88-56cb-956c-4ce17498d4d6
+		summarizeBy: none
+		sourceColumn: WeekdayNumber
+
+	/// Weekend (Sat-Sun) or Weekday (Mon-Fri)
+	column DayType
+		dataType: string
+		lineageTag: fabd1139-546d-56a3-939a-95382f237c75
+		summarizeBy: none
+		sourceColumn: DayType
+
+	column Season
+		dataType: string
+		lineageTag: 7ff70e17-2782-5a05-9283-6133a0975c6e
+		summarizeBy: none
+		sourceColumn: Season
+		sortByColumn: SeasonOrder
+
+	column SeasonOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ac979b4a-9de1-59da-9f7b-0afc1148ce90
+		summarizeBy: none
+		sourceColumn: SeasonOrder
+
+	/// Peak travel period (modelled) or Other days
+	column PeriodType
+		dataType: string
+		lineageTag: 73cc5b72-23a9-5f3e-baf1-41910457b5b4
+		summarizeBy: none
+		sourceColumn: PeriodType
+
+	column HolidayName
+		dataType: string
+		lineageTag: 9654ce2c-38e7-5599-a6ca-dd94a51340a6
+		summarizeBy: none
+		sourceColumn: HolidayName
+
+	partition Dim_Date = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_Date.csv"), [Delimiter = ",", Columns = 13, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"Date", type date}, {"Year", Int64.Type}, {"Quarter", Int64.Type}, {"MonthNumber", Int64.Type}, {"MonthName", type text}, {"YearMonth", type text}, {"WeekdayName", type text}, {"WeekdayNumber", Int64.Type}, {"DayType", type text}, {"Season", type text}, {"SeasonOrder", Int64.Type}, {"PeriodType", type text}, {"HolidayName", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

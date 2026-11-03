@@ -1,0 +1,48 @@
+/// reports/kpi_reference_values.csv (31 approved KPI reference values) with the reconciliation tolerance of docs/KPI_definitions.md section 1.8. Disconnected.
+table Ref_KPI
+	lineageTag: 53ab73dc-5f3f-5fcf-918c-bbc00b178d51
+
+	column KpiKey
+		dataType: string
+		lineageTag: 2df391e5-b558-5095-9081-4837999d8c2d
+		summarizeBy: none
+		sourceColumn: KpiKey
+
+	column KpiName
+		dataType: string
+		lineageTag: 24cb228a-e32a-5924-a9b5-b4c906bd334b
+		summarizeBy: none
+		sourceColumn: KpiName
+
+	column ReferenceValue
+		dataType: double
+		formatString: #,0.0000
+		lineageTag: fbd8774c-1c92-531a-98ec-28e58ecb4176
+		summarizeBy: none
+		sourceColumn: ReferenceValue
+
+	column Unit
+		dataType: string
+		lineageTag: ddb206c9-3e1d-57aa-873f-5b9b676c1f17
+		summarizeBy: none
+		sourceColumn: Unit
+
+	column Tolerance
+		dataType: double
+		formatString: 0.00000
+		lineageTag: 9e88a0ea-b3b4-5709-b06b-b0eb106d4d71
+		summarizeBy: none
+		sourceColumn: Tolerance
+
+	partition Ref_KPI = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Ref_KPI.csv"), [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"KpiKey", type text}, {"KpiName", type text}, {"ReferenceValue", type number}, {"Unit", type text}, {"Tolerance", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

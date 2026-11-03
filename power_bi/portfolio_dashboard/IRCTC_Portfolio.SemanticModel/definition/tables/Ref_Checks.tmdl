@@ -1,0 +1,53 @@
+/// Data-quality check results: Phase 4 PostgreSQL checks (PostgreSQL 16 build) and Phase 6 model checks (executed in Python). Disconnected.
+table Ref_Checks
+	lineageTag: 9150dfd7-4646-50ec-a719-a7a0e20a0e4d
+
+	column CheckSource
+		dataType: string
+		lineageTag: e3f3ab2f-6dce-5ac7-8cdd-5ed6585575f5
+		summarizeBy: none
+		sourceColumn: CheckSource
+
+	column CheckID
+		dataType: string
+		lineageTag: 6a688ba4-2821-5e4c-93a4-3bbb7bcccda0
+		summarizeBy: none
+		sourceColumn: CheckID
+
+	column Category
+		dataType: string
+		lineageTag: ce75c575-d31a-52ba-ae98-3ac3b40aefe8
+		summarizeBy: none
+		sourceColumn: Category
+
+	column Description
+		dataType: string
+		lineageTag: 7cd46555-8181-509e-83f2-233843f72416
+		summarizeBy: none
+		sourceColumn: Description
+
+	column Violations
+		dataType: int64
+		formatString: #,0
+		lineageTag: c996c762-39fd-5c75-a456-e0a398ee2d41
+		summarizeBy: none
+		sourceColumn: Violations
+
+	column Passed
+		dataType: boolean
+		lineageTag: bfa7f266-4a2b-5e68-815b-506c93f28533
+		summarizeBy: none
+		sourceColumn: Passed
+
+	partition Ref_Checks = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Ref_Checks.csv"), [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"CheckSource", type text}, {"CheckID", type text}, {"Category", type text}, {"Description", type text}, {"Violations", Int64.Type}, {"Passed", type logical}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

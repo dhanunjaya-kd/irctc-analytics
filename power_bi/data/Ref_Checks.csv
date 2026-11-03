@@ -1,0 +1,111 @@
+CheckSource,CheckID,Category,Description,Violations,Passed
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-01,BUSINESS RULE,passenger initial_status and final_status are in their documented domains,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-02,BUSINESS RULE,"booking_status equals the roll-up of passenger final_status (single status, else Mixed)",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-03a,BUSINESS RULE,num_passengers equals the number of passenger rows,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-03b,BUSINESS RULE,total_fare equals SUM(passenger fare_amount),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-03c,BUSINESS RULE,passenger_seq runs 1..n within each booking,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-04a,BUSINESS RULE,booking date is on or before the journey date and lead time is 0..120 days,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-04b,BUSINESS RULE,booking_ts is before chart preparation (first departure minus 4 hours),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-04c,BUSINESS RULE,journey_date inside the approved window 2024-09-01 .. 2026-08-31,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-05a,BUSINESS RULE,booking journey_date falls on a scheduled run day of the train,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-05b,BUSINESS RULE,each booking train/date has a train_operations row,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-05c,BUSINESS RULE,seat_capacity rows fall on run days and have a train_operations row,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-06a,BUSINESS RULE,booking route_id equals the train route,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-06b,BUSINESS RULE,boarding and destination stations equal the route origin and destination,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-06c,BUSINESS RULE,boarding and destination stations differ,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-07,BUSINESS RULE,each booking train/date/class has a seat_capacity row,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-08a,BUSINESS RULE,Confirmed passengers <= total_seats - rac_berths,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-08b,BUSINESS RULE,RAC passengers <= 2 x rac_berths (none where rac_berths = 0),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-08c,BUSINESS RULE,Confirmed + RAC weight x RAC <= total_seats (occupancy <= 100%),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-08d,BUSINESS RULE,Waitlisted passengers <= wl_limit,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-09a,BUSINESS RULE,total_seats = coaches_attached x seats_per_coach,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-09b,BUSINESS RULE,seats_per_coach equals the class standard,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-10a,BUSINESS RULE,cancellation_id is set exactly when final_status is Cancelled or Waitlisted,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-10b,BUSINESS RULE,Passenger events link Cancelled passengers; System events link Waitlisted passengers,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-10c,BUSINESS RULE,linked passengers belong to the event booking,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-11a,BUSINESS RULE,cancelled_passengers equals the number of linked passengers,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-11b,BUSINESS RULE,original_fare_amount equals SUM(linked passenger fares),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-11c,BUSINESS RULE,refund + charge = original fare; refund and charge >= 0,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-11d,BUSINESS RULE,status_at_cancellation and type are in domain; System events are Waitlisted,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-11e,BUSINESS RULE,every cancellation event has at least one linked passenger,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-12,BUSINESS RULE,booking_ts <= cancellation_ts <= chart preparation time,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-13,BUSINESS RULE,"train stops: sequence 1..n, distance strictly increasing, terminals match the route, no arrival at origin / departure at terminus",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-14,BUSINESS RULE,"no personally identifiable columns or values (name, e-mail, phone, address, ID numbers)",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-15,BUSINESS RULE,"fares > 0, passengers per booking 1..6",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-16,BUSINESS RULE,"station_code unique, upper-case, trimmed",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",BR-17,BUSINESS RULE,no demotion between initial and final passenger status,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",DOM-age,DOMAIN,"age_band in {Child, Adult, Senior, Unknown}",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",DOM-class,DOMAIN,"travel_class in {1A, 2A, 3A, SL, CC, 2S} for bookings and capacity",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",DOM-delay,DOMAIN,non-null delays inside -60..1440 minutes,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",DOM-origin,LABELLING,every row of every core table is labelled data_origin = SYNTHETIC,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-booking_passengers,ROWS,core.booking_passengers row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-bookings,ROWS,core.bookings row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-calendar,ROWS,core.calendar row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-cancellations,ROWS,core.cancellations row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-routes,ROWS,core.routes row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-seat_capacity,ROWS,core.seat_capacity row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-stations,ROWS,core.stations row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-train_operations,ROWS,core.train_operations row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-train_stops,ROWS,core.train_stops row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-phase2-trains,ROWS,core.trains row count equals the Phase 2 cleaned row count (row_movement.csv),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-booking_passengers,ROWS,rows loaded into core.booking_passengers equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-bookings,ROWS,rows loaded into core.bookings equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-calendar,ROWS,rows loaded into core.calendar equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-cancellations,ROWS,rows loaded into core.cancellations equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-routes,ROWS,rows loaded into core.routes equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-seat_capacity,ROWS,rows loaded into core.seat_capacity equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-stations,ROWS,rows loaded into core.stations equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-train_operations,ROWS,rows loaded into core.train_operations equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-train_stops,ROWS,rows loaded into core.train_stops equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",ROWS-stg-core-trains,ROWS,rows loaded into core.trains equal the rows staged from the CSV file,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",SIZE-bookings,SIZE,"at least 100,000 bookings",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",SIZE-months,SIZE,at least 24 months of journeys,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",SIZE-stations,SIZE,at least 30 stations,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",SIZE-trains,SIZE,at least 50 trains,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-check-constraints,STRUCTURE,55 CHECK constraints exist in core,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-constraints-validated,STRUCTURE,every core constraint is validated,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-core-tables,STRUCTURE,10 core tables exist,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-foreign-keys,STRUCTURE,18 foreign keys exist in core,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-nullable-columns,STRUCTURE,"only the 6 documented columns are nullable (arrival_time, departure_time, holiday_name, peak_period_name, arrival_delay_min, cancellation_id)",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-primary-keys,STRUCTURE,every core table has a primary key (10),0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-schemas,STRUCTURE,"schemas stg, core, analytics and qa exist",0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-secondary-indexes,STRUCTURE,13 secondary indexes (ix_*) exist in core,0,true
+"PostgreSQL (Phase 4; built on PostgreSQL 16, not yet run on 18.4)",STRUCT-unique-constraints,STRUCTURE,8 UNIQUE constraints exist in core,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-01,MODEL DATA,every model CSV exists and its header equals the specification,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-02,MODEL DATA,row count of every model table equals the Phase 2 validated expected count,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-03,MODEL DATA,primary key of every dimension and fact table is unique and not null,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-04,RELATIONSHIPS,no orphan rows: every many-side key exists on the one side (17 relationships),0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-05,RELATIONSHIPS,the one side of every relationship is unique and not null (many-to-one cardinality is valid),0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-06,RELATIONSHIPS,no many-to-many and no bidirectional relationship: the 'one' side is always a dimension,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-07,RELATIONSHIPS,no ambiguous filter paths: at most one directed path from any table to any other,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-08,STAR SCHEMA,"five facts, six dimensions, no fact-to-fact relationship, every fact joins at least two dimensions",0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-09,DATE TABLE,"date table is unique, contiguous daily and covers every fact date",0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-10,MODEL DATA,"totals of fares, refunds, seats and passenger status counts equal the validated cleaned data",0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-11,MODEL DATA,"date, train and class on passengers and refund events equal those of their booking",0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-12,MODEL DATA,23 missing arrival delays are preserved as NULL (never imputed),0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-13,LABELLING,"every model table is labelled DERIVED from SYNTHETIC data, with its true row count",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-01,DAX,all 65 measures parse,0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-02,DAX,"every table, column, measure, variable and function reference in every measure resolves",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-03,DAX,no circular measure dependencies,0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-04,DAX,no raw division operator: every division uses DIVIDE (divide-by-zero protection),0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-05,DAX,"every measure has a unique name, description, display folder and format (text measures excepted)",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-06,DAX,every approved reference KPI (31) and both growth KPIs map to a measure,0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-07,FORMATTING,"number format of every approved KPI measure follows its unit (counts #,0; rates 0.0%; INR millions or #,0.00; per-run #,0.0)",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-08,DAX,"library demonstrates SUM, DISTINCTCOUNT, CALCULATE, FILTER, DIVIDE, SWITCH, VAR, time intelligence (DATEADD, TOTALYTD), ranking (RANKX) and iterators (SUMX)",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-09,DAX EXECUTION,"all 59 evaluable measures execute in the Python interpreter; the 6 others (TOTALYTD, RANKX, FORMAT, ...) are checked statically only",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-10,DAX EXECUTION,every approved-KPI measure is executable (none relies on the unsupported subset),0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-11,DAX EXECUTION,"ratio and average measures return BLANK (not an error, infinity or 0) when the selection is empty (divide-by-zero protection)",0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-12,DAX EXECUTION,the ISBLANK guard matters: without it On-Time Runs would wrongly include the 23 runs with a missing delay (DAX compares BLANK as 0),0,true
+Phase 6 model checks (executed in Python on the exported tables),DX-13,DAX EXECUTION,"the page-6 SWITCH measure returns, for each of the 31 reference KPIs, exactly the value of the measure implementing it",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-01,TMDL,"TMDL: one file per table, 17 tables referenced, 17 relationships, and all 65 measures in _Measures.tmdl identical to the specification",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-02,TMDL,TMDL files are tab-indented (no space-indented lines),0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-03,REPORT FILES,"project, report, page and all 102 visual JSON files exist and parse; page order lists the 6 pages",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-04,REPORT,every field used by a visual exists in the semantic model,0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-05,REPORT LAYOUT,"all visuals are inside the 1280 x 720 canvas, do not overlap, and meet minimum sizes",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-06,REPORT,"every page carries the synthetic / sampling disclosure (768 of 19,708) twice and OBSERVED / INTERPRETATION / LIMITATION boxes",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-07,REPORT CONTENT,each page contains the measures and dimensions required by the Phase 6 page specification,0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-08,FORMATTING,"KPI card titles state the unit (INR million, %) and every chart and table has a title",0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-09,FORMATTING,theme defines 8 colour-blind-safe data colours and a page background,0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-10,DOCUMENTATION,build specification lists every visual id; 6 wireframes exist,0,true
+Phase 6 model checks (executed in Python on the exported tables),FL-11,DOCUMENTATION,DAX library file defines every measure; the reconciliation query exists,0,true
+Phase 6 model checks (executed in Python on the exported tables),MD-14,NON-MUTATION,"the 25 source files (cleaned tables, raw originals, reference outputs) are unchanged by this phase",0,true

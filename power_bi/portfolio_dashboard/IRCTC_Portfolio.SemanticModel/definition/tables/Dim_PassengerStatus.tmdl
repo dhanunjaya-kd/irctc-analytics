@@ -1,0 +1,32 @@
+/// Passenger final-status values (Confirmed, RAC, Waitlisted, Cancelled) in logical order.
+table Dim_PassengerStatus
+	lineageTag: d3aae294-0542-58d5-a32d-3bc3d3052719
+
+	column Status
+		dataType: string
+		isKey
+		lineageTag: c0a59a78-b721-5ea0-8a7d-c96e6c9bb8de
+		summarizeBy: none
+		sourceColumn: Status
+		sortByColumn: StatusOrder
+
+	column StatusOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: e7fcf2c2-2178-56e4-b114-84024a343d7f
+		summarizeBy: none
+		sourceColumn: StatusOrder
+
+	partition Dim_PassengerStatus = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_PassengerStatus.csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"Status", type text}, {"StatusOrder", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

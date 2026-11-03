@@ -1,0 +1,493 @@
+/// Home table for the measure library (hidden placeholder column).
+table _Measures
+	lineageTag: 65f6a201-3f78-50b9-9c52-47d639f0b835
+
+	/// Booking volume: distinct bookings in the current filter context.
+	measure 'Total Bookings' = DISTINCTCOUNT(Fact_Booking[BookingID])
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: a933cfa6-02ae-58d6-aa99-87e562bc4bc2
+
+	/// Passenger volume: passengers on all bookings, any final status.
+	measure 'Total Passengers' = COUNTROWS(Fact_Passenger)
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: 439eaf51-0317-50b2-b55c-78e6f1c85d9b
+
+	/// Bookings in which EVERY passenger finished Confirmed (Mixed-status bookings are counted separately).
+	measure 'Fully Confirmed Bookings' = CALCULATE([Total Bookings], Fact_Booking[BookingStatus] = "Confirmed")
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: f0da9f3a-a72c-5141-bce5-ed19317845c8
+
+	/// Bookings whose passengers finished with different final statuses.
+	measure 'Mixed-Status Bookings' = CALCULATE([Total Bookings], Fact_Booking[BookingStatus] = "Mixed")
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: 02a6b327-2013-5845-8d03-dce0698f2a69
+
+	/// Bookings in which every passenger was cancelled by the passenger (System auto-refunds are not cancellations).
+	measure 'Cancelled Bookings' = CALCULATE([Total Bookings], Fact_Booking[BookingStatus] = "Cancelled")
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: 5360b164-c909-5232-9890-993fb96ba444
+
+	/// Passengers whose final status is Confirmed.
+	measure 'Confirmed Passengers' = CALCULATE([Total Passengers], Fact_Passenger[FinalStatus] = "Confirmed")
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: a5daf59c-337e-5cd0-a745-5986b1ab90cf
+
+	/// Passengers whose final status is RAC.
+	measure 'RAC Passengers' = CALCULATE([Total Passengers], Fact_Passenger[FinalStatus] = "RAC")
+		formatString: #,0
+		displayFolder: 1 Volumes
+		lineageTag: 7db03316-600d-5c8e-a092-974a76e81130
+
+	/// Passengers whose final status is Cancelled (cancelled by the passenger).
+	measure 'Cancelled Passengers' = CALCULATE([Total Passengers], Fact_Passenger[FinalStatus] = "Cancelled")
+		formatString: #,0
+		displayFolder: 2 Cancellation
+		lineageTag: e270fc4a-47e0-5e09-a9d0-8e5ce48e11b8
+
+	/// Cancelled passengers / total passengers (passenger-based; the primary cancellation rate).
+	measure 'Passenger Cancellation Rate' = DIVIDE([Cancelled Passengers], [Total Passengers])
+		formatString: 0.0%
+		displayFolder: 2 Cancellation
+		lineageTag: ade205a5-e2e4-51d2-bacd-1b7027cc8ce2
+
+	/// Fully cancelled bookings / total bookings (booking-based companion rate).
+	measure 'Booking Cancellation Rate' = DIVIDE([Cancelled Bookings], [Total Bookings])
+		formatString: 0.0%
+		displayFolder: 2 Cancellation
+		lineageTag: 6d2706b1-bc18-5b67-bb82-0f6231979d03
+
+	/// Passengers who were waitlisted AT BOOKING TIME (initial status).
+	measure 'Initial Waitlist Demand' = CALCULATE([Total Passengers], Fact_Passenger[InitialStatus] = "Waitlisted")
+		formatString: #,0
+		displayFolder: 3 Waitlist
+		lineageTag: a774d931-6f12-5221-858b-ce040ff72322
+
+	/// Initially waitlisted passengers who finished Confirmed or RAC.
+	measure 'Waitlist Cleared' = CALCULATE([Total Passengers], Fact_Passenger[InitialStatus] = "Waitlisted", Fact_Passenger[FinalStatus] IN {"Confirmed", "RAC"})
+		formatString: #,0
+		displayFolder: 3 Waitlist
+		lineageTag: fa0ce75c-4034-5e72-b664-203c98c04457
+
+	/// Waitlist cleared / initial waitlist demand.
+	measure 'Waitlist Clearance Rate' = DIVIDE([Waitlist Cleared], [Initial Waitlist Demand])
+		formatString: 0.0%
+		displayFolder: 3 Waitlist
+		lineageTag: e85a881b-64f9-5849-98c9-ba2a2809d089
+
+	/// Passengers still Waitlisted at chart preparation (refunded by the System).
+	measure 'Uncleared Waitlist Passengers' = CALCULATE([Total Passengers], Fact_Passenger[FinalStatus] = "Waitlisted")
+		formatString: #,0
+		displayFolder: 3 Waitlist
+		lineageTag: fcdff4e2-e164-56ca-b4c6-bfbfecd4ce23
+
+	/// Uncleared waitlist passengers / initial waitlist demand.
+	measure 'Uncleared Share of Waitlist Demand' = DIVIDE([Uncleared Waitlist Passengers], [Initial Waitlist Demand])
+		formatString: 0.0%
+		displayFolder: 3 Waitlist
+		lineageTag: 74c8c8c3-b8e7-5a95-abd0-4d91a7ca930e
+
+	/// Initial waitlist demand / total passengers.
+	measure 'Initial Waitlist Share of Passengers' = DIVIDE([Initial Waitlist Demand], [Total Passengers])
+		formatString: 0.0%
+		displayFolder: 3 Waitlist
+		lineageTag: 443d9d08-07f4-5f6f-876d-2d0e12e722bc
+
+	/// Seats of the SIMULATED train-class runs in context (simulated capacity).
+	measure 'Seat Supply' = SUM(Fact_ClassRun[TotalSeats])
+		formatString: #,0
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 020eff67-a2f0-5679-be05-b36212dd6239
+
+	/// RAC passengers count as 0.5 seat. A configurable simulation assumption (A-09), not an official railway rule.
+	measure 'RAC Seat Weight' = 0.5
+		formatString: 0.00
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 8c114138-77b7-52ba-b413-be67ee189efa
+
+	/// Seat-equivalents: Confirmed + 0.5 x RAC. Waitlisted passengers hold no seat.
+	measure 'Booked Seats' = [Confirmed Passengers] + [RAC Seat Weight] * [RAC Passengers]
+		formatString: #,0.0
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 7b1311ea-80e1-5144-97b4-722b00e31b30
+
+	/// (Confirmed + 0.5 x RAC) / seat supply of the same train-class runs.
+	measure 'Seat Occupancy' = DIVIDE([Booked Seats], [Seat Supply])
+		formatString: 0.0%
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 8fcca65c-8c64-525c-a55b-9d7cbe3fd583
+
+	/// Confirmed passengers / seat supply.
+	measure 'Confirmed Seat Occupancy' = DIVIDE([Confirmed Passengers], [Seat Supply])
+		formatString: 0.0%
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 3d37bef8-b634-5745-b296-0aeffcdf3b10
+
+	/// Uncleared waitlisted passengers / seat supply (they hold no seat, so this is not occupancy).
+	measure 'Waitlist Pressure' = DIVIDE([Uncleared Waitlist Passengers], [Seat Supply])
+		formatString: 0.0%
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 553cd792-263a-5c46-8be7-acadebcf273f
+
+	/// EXPLORATORY, not an approved KPI: all requested passengers per seat of supply.
+	measure 'Demand per Available Seat' = DIVIDE([Total Passengers], [Seat Supply])
+		formatString: #,0.00
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: ccef6f1e-c08f-51a3-8d1f-6495f7d699e4
+
+	/// Simulated train-class runs in context.
+	measure Class-Runs = COUNTROWS(Fact_ClassRun)
+		formatString: #,0
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: 04da872a-3d2b-5669-a371-f07b9bd52604
+
+	/// Occupancy band for conditional formatting (SWITCH(TRUE()) pattern).
+	measure 'Occupancy Band' = SWITCH(TRUE(), ISBLANK([Seat Occupancy]), BLANK(), [Seat Occupancy] >= 0.95, "95% and above", [Seat Occupancy] >= 0.75, "75% to below 95%", [Seat Occupancy] >= 0.5, "50% to below 75%", "Below 50%")
+		displayFolder: 4 Capacity and occupancy
+		lineageTag: dae43551-3855-506a-9c8c-0edc429e8495
+
+	/// Gross booking value in raw INR: booking fares before refunds. Not revenue or profit.
+	measure 'Gross Booking Value' = SUM(Fact_Booking[TotalFare])
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: da44a846-70db-57e3-98cd-d358d4c8d1f0
+
+	/// Refund amount in raw INR: Passenger cancellations plus System auto-refunds of uncleared waitlists.
+	measure Refunds = SUM(Fact_Cancellation[RefundAmount])
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: ba161655-d009-5c81-b3ff-b39f356bc826
+
+	/// Refunds from passenger cancellation events.
+	measure 'Refunds - Passenger Cancellations' = CALCULATE([Refunds], Fact_Cancellation[CancellationType] = "Passenger")
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: 3b737041-675a-5be2-9f98-05fcb6da7e24
+
+	/// Refunds of uncleared waitlisted passengers (a synthetic business rule, A-19).
+	measure 'Refunds - System Auto-Refunds' = CALCULATE([Refunds], Fact_Cancellation[CancellationType] = "System")
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: 77756e44-a0ca-51ed-bfd8-c7ec53afb427
+
+	/// Cancellation charges kept (original fare minus refund).
+	measure 'Retained Cancellation Charges' = SUM(Fact_Cancellation[CancellationCharge])
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: 63d93129-6dd2-5bf6-bb6a-68458a3b471b
+
+	/// Gross booking value minus refunds, raw INR. Not revenue or profit.
+	measure 'Net Booking Value' = [Gross Booking Value] - [Refunds]
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: 77316fac-9c94-58e3-a82d-9cbda7990a05
+
+	/// Gross booking value / total passengers (INR).
+	measure 'Average Fare per Passenger' = DIVIDE([Gross Booking Value], [Total Passengers])
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: f9d57d56-5dd6-5549-97ef-5fc2c5970c84
+
+	/// Gross booking value / total bookings (INR; secondary).
+	measure 'Average Fare per Booking' = DIVIDE([Gross Booking Value], [Total Bookings])
+		formatString: #,0.00
+		displayFolder: 5 Booking value
+		lineageTag: 6b1402a6-8387-582c-b6ba-7d31aec43748
+
+	/// Refunds / gross booking value.
+	measure 'Refund Share of Gross' = DIVIDE([Refunds], [Gross Booking Value])
+		formatString: 0.0%
+		displayFolder: 5 Booking value
+		lineageTag: 5ae1c06c-7cf5-5a26-bb08-342dc4010135
+
+	/// Refund events (Passenger and System).
+	measure 'Cancellation Events' = COUNTROWS(Fact_Cancellation)
+		formatString: #,0
+		displayFolder: 2 Cancellation
+		lineageTag: a62d2cb3-8bea-5f6c-adf3-1b2005303600
+
+	/// Passengers covered by refund events (Passenger cancellations plus System auto-refunds).
+	measure 'Passengers Refunded' = SUM(Fact_Cancellation[CancelledPassengers])
+		formatString: #,0
+		displayFolder: 2 Cancellation
+		lineageTag: 84d5e56f-85ef-5dff-ae92-485f986f0aa4
+
+	/// Simulated train runs in context (768 in total, 32 per month): a sample of the 19,708 scheduled runs.
+	measure 'Simulated Runs' = COUNTROWS(Fact_TrainRun)
+		formatString: #,0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 6b4865f6-5e69-5f89-ae33-13b159f8c93d
+
+	/// Bookings per simulated run: the sampling-safe way to compare months.
+	measure 'Bookings per Run' = DIVIDE([Total Bookings], [Simulated Runs])
+		formatString: #,0.0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: b5eceecc-0b06-5c0f-af3a-16b2199e1400
+
+	/// Passengers per simulated run.
+	measure 'Passengers per Run' = DIVIDE([Total Passengers], [Simulated Runs])
+		formatString: #,0.0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 9da47875-81b8-560e-ae17-5066dfa2201b
+
+	/// Runs with a recorded arrival delay (NULL delays are excluded, never imputed).
+	measure 'Runs with Recorded Delay' = CALCULATE(COUNTROWS(Fact_TrainRun), FILTER(Fact_TrainRun, NOT(ISBLANK(Fact_TrainRun[ArrivalDelayMin]))))
+		formatString: #,0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 368d308c-99a0-58b6-b3f4-b23acb31b9de
+
+	/// Runs with an arrival delay of at most 15 minutes (a project threshold, A-11). The ISBLANK guard matters because DAX compares BLANK as 0.
+	measure 'On-Time Runs' = CALCULATE(COUNTROWS(Fact_TrainRun), FILTER(Fact_TrainRun, NOT(ISBLANK(Fact_TrainRun[ArrivalDelayMin])) && Fact_TrainRun[ArrivalDelayMin] <= 15))
+		formatString: #,0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 0a7e819d-e6bf-5007-9adb-953117dabec9
+
+	/// Runs with a recorded delay above 15 minutes.
+	measure 'Delayed Runs' = [Runs with Recorded Delay] - [On-Time Runs]
+		formatString: #,0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 3b630b06-0add-5022-b0ab-133eb69a29ad
+
+	/// On-time runs / runs with a recorded arrival delay.
+	measure 'On-Time Performance' = DIVIDE([On-Time Runs], [Runs with Recorded Delay])
+		formatString: 0.0%
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 1311974f-532f-5e23-a795-dd1dc61b868d
+
+	/// Average arrival delay in minutes; early arrivals count as 0. Denominator: runs with a recorded delay.
+	measure 'Average Delay (min)' = DIVIDE(SUMX(FILTER(Fact_TrainRun, NOT(ISBLANK(Fact_TrainRun[ArrivalDelayMin]))), MAX(Fact_TrainRun[ArrivalDelayMin], 0)), [Runs with Recorded Delay])
+		formatString: #,0.0
+		displayFolder: 6 Runs and punctuality
+		lineageTag: 8d7e2c89-6994-5a0c-87b7-06c8c3630d1b
+
+	/// Bookings in the previous month (time intelligence; blank for the first simulated month).
+	measure 'Bookings Previous Month' = CALCULATE([Total Bookings], DATEADD(Dim_Date[Date], -1, MONTH))
+		formatString: #,0
+		displayFolder: 7 Time intelligence
+		lineageTag: 4d1e167d-56f8-5a04-980b-3a87773c1460
+
+	/// Approved growth KPI: bookings / previous month's bookings - 1. BLANK when there is no previous month. Raw totals reflect the 32-runs-per-month sampling design: prefer the per-run companion.
+	measure 'Monthly Booking Growth' =
+			VAR cur = [Total Bookings]
+			VAR prev = [Bookings Previous Month]
+			RETURN IF(prev > 0, DIVIDE(cur, prev) - 1)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 7 Time intelligence
+		lineageTag: d93c7b7c-4bd3-58b4-a6d6-cb2ee9c2ca3d
+
+	/// Bookings per run in the previous month.
+	measure 'Bookings per Run Previous Month' = CALCULATE([Bookings per Run], DATEADD(Dim_Date[Date], -1, MONTH))
+		formatString: #,0.0
+		displayFolder: 7 Time intelligence
+		lineageTag: 1d013d0d-cfb5-5d07-aeaa-36df574eb24b
+
+	/// Month-over-month growth in bookings per simulated run (the sampling-safe companion of the approved growth KPI).
+	measure 'Growth in Bookings per Run' =
+			VAR cur = [Bookings per Run]
+			VAR prev = [Bookings per Run Previous Month]
+			RETURN IF(prev > 0, DIVIDE(cur, prev) - 1)
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 7 Time intelligence
+		lineageTag: df145a34-957c-5e1d-a2b4-2ed8c1da81b5
+
+	/// Year-to-date bookings (calendar year).
+	measure 'Bookings YTD' = TOTALYTD([Total Bookings], Dim_Date[Date])
+		formatString: #,0
+		displayFolder: 7 Time intelligence
+		lineageTag: fc949650-435d-5559-85ab-8632aa72965c
+
+	/// Three-month trailing average of bookings per run (smooths seasonality noise).
+	measure 'Bookings per Run 3M Average' = CALCULATE([Bookings per Run], DATESINPERIOD(Dim_Date[Date], MAX(Dim_Date[Date]), -3, MONTH))
+		formatString: #,0.0
+		displayFolder: 7 Time intelligence
+		lineageTag: 1185c711-c91b-5d06-bd7f-085454ba7dd6
+
+	/// Dense rank of the train by seat occupancy among the trains in view (ties share a rank).
+	measure 'Train Occupancy Rank' = IF(ISBLANK([Seat Occupancy]), BLANK(), RANKX(ALLSELECTED(Dim_Train[TrainName]), [Seat Occupancy], , DESC, DENSE))
+		formatString: 0
+		displayFolder: 8 Ranking
+		lineageTag: 19027245-ecf5-57e1-884b-024782d69b4f
+
+	/// Dense rank of the route by passengers per simulated run.
+	measure 'Route Demand Rank' = IF(ISBLANK([Passengers per Run]), BLANK(), RANKX(ALLSELECTED(Dim_Route[RouteName]), [Passengers per Run], , DESC, DENSE))
+		formatString: 0
+		displayFolder: 8 Ranking
+		lineageTag: 2622e056-18a1-5dc1-83d0-d142ddbda065
+
+	/// The KPI chosen in the Executive Summary selector (all four are rates, so one percentage axis is valid).
+	measure 'Selected Rate KPI' = SWITCH(SELECTEDVALUE('KPI Selector'[KPI Name], "Seat Occupancy"), "Seat Occupancy", [Seat Occupancy], "Passenger Cancellation Rate", [Passenger Cancellation Rate], "Waitlist Clearance Rate", [Waitlist Clearance Rate], "On-Time Performance", [On-Time Performance])
+		formatString: 0.0%
+		displayFolder: 9 Selectors and display
+		lineageTag: b40b220a-efcc-5022-ba6f-fe3fd0f68f44
+
+	/// Dynamic title for the selected-KPI trend visual.
+	measure 'Selected KPI Title' = "Monthly trend: " & SELECTEDVALUE('KPI Selector'[KPI Name], "Seat Occupancy")
+		displayFolder: 9 Selectors and display
+		lineageTag: 99ecdeea-93fe-50d7-b62a-bd02704beef3
+
+	/// Disclosure text with the number of simulated runs in the current view.
+	measure 'Sampling Disclosure' = "Synthetic data, sampled simulation: " & FORMAT([Simulated Runs], "#,0") & " simulated runs in view, from 768 of 19,708 scheduled runs (3.9%). Not IRCTC network-wide data. No forecasts."
+		displayFolder: 9 Selectors and display
+		lineageTag: 654cf429-80ae-5538-bb4e-0c926e71d8b4
+
+	/// Value of the measure that implements the KPI named in Ref_KPI, evaluated with every dashboard filter removed. Used by the reconciliation table on page 6.
+	measure 'KPI Check Value' =
+			VAR k = SELECTEDVALUE(Ref_KPI[KpiKey])
+			RETURN CALCULATE(
+			    SWITCH(k,
+			        "total_bookings", [Total Bookings],
+			        "total_passengers", [Total Passengers],
+			        "confirmed_bookings", [Fully Confirmed Bookings],
+			        "mixed_bookings", [Mixed-Status Bookings],
+			        "cancelled_bookings", [Cancelled Bookings],
+			        "cancelled_passengers", [Cancelled Passengers],
+			        "passenger_cancellation_rate", [Passenger Cancellation Rate],
+			        "booking_cancellation_rate", [Booking Cancellation Rate],
+			        "wl_demand", [Initial Waitlist Demand],
+			        "wl_cleared", [Waitlist Cleared],
+			        "wl_clearance_rate", [Waitlist Clearance Rate],
+			        "wl_uncleared", [Uncleared Waitlist Passengers],
+			        "seat_supply", [Seat Supply],
+			        "booked_seats", [Booked Seats],
+			        "occupancy", [Seat Occupancy],
+			        "confirmed_occupancy", [Confirmed Seat Occupancy],
+			        "waitlist_pressure", [Waitlist Pressure],
+			        "gross_value", [Gross Booking Value],
+			        "refund_total", [Refunds],
+			        "refund_passenger", [Refunds - Passenger Cancellations],
+			        "refund_system", [Refunds - System Auto-Refunds],
+			        "retained_charges", [Retained Cancellation Charges],
+			        "net_value", [Net Booking Value],
+			        "avg_fare_per_passenger", [Average Fare per Passenger],
+			        "avg_fare_per_booking", [Average Fare per Booking],
+			        "simulated_runs", [Simulated Runs],
+			        "bookings_per_run", [Bookings per Run],
+			        "passengers_per_run", [Passengers per Run],
+			        "delayed_runs", [Delayed Runs],
+			        "otp", [On-Time Performance],
+			        "avg_delay", [Average Delay (min)]),
+			    REMOVEFILTERS(Dim_Date), REMOVEFILTERS(Dim_Class), REMOVEFILTERS(Dim_Train), REMOVEFILTERS(Dim_Route), REMOVEFILTERS(Dim_BookingStatus), REMOVEFILTERS(Dim_PassengerStatus))
+		formatString: #,0.0000
+		displayFolder: 10 Validation
+		lineageTag: 3125b703-85a3-560f-a2a7-bd76a7e528e6
+
+	/// Reference value from reports/kpi_reference_values.csv.
+	measure 'KPI Reference Value' = SELECTEDVALUE(Ref_KPI[ReferenceValue])
+		formatString: #,0.0000
+		displayFolder: 10 Validation
+		lineageTag: c6240573-5071-5b8b-b588-347bb04b50fa
+
+	/// Power BI value minus reference value.
+	measure 'KPI Difference' = [KPI Check Value] - [KPI Reference Value]
+		formatString: #,0.000000
+		displayFolder: 10 Validation
+		lineageTag: c455092c-71a1-5bf8-8a88-28bf5c64d9cb
+
+	/// PASS when the absolute difference is within the documented tolerance (counts exact; INR 0.005; shares 0.00005; per-run and minute values 0.0001).
+	measure 'KPI Status' =
+			VAR chk = [KPI Check Value]
+			VAR tol = SELECTEDVALUE(Ref_KPI[Tolerance])
+			RETURN IF(ISBLANK(chk), "NOT COMPUTED", IF(ABS([KPI Difference]) <= tol, "PASS", "FAIL"))
+		displayFolder: 10 Validation
+		lineageTag: 9405b37c-00d8-5413-aac8-a3858a0673e6
+
+	/// Number of KPIs whose status is PASS.
+	measure 'KPIs Reconciled' = CALCULATE(COUNTROWS(Ref_KPI), FILTER(Ref_KPI, [KPI Status] = "PASS"))
+		formatString: #,0
+		displayFolder: 10 Validation
+		lineageTag: 41ecf08f-3a02-56b6-8967-a778f8c6bcdf
+
+	/// Number of approved reference KPIs.
+	measure 'KPIs in Reference' = COUNTROWS(Ref_KPI)
+		formatString: #,0
+		displayFolder: 10 Validation
+		lineageTag: 331b5740-450f-59ba-bcce-4f3aefa8bd24
+
+	/// Rows loaded into the named model table (all filters removed).
+	measure 'Model Row Count' =
+			VAR t = SELECTEDVALUE(Ref_RowCounts[ModelTable])
+			RETURN CALCULATE(
+			    SWITCH(t,
+			        "Fact_Booking", COUNTROWS(Fact_Booking),
+			        "Fact_Passenger", COUNTROWS(Fact_Passenger),
+			        "Fact_Cancellation", COUNTROWS(Fact_Cancellation),
+			        "Fact_ClassRun", COUNTROWS(Fact_ClassRun),
+			        "Fact_TrainRun", COUNTROWS(Fact_TrainRun),
+			        "Dim_Date", COUNTROWS(Dim_Date),
+			        "Dim_Train", COUNTROWS(Dim_Train),
+			        "Dim_Route", COUNTROWS(Dim_Route),
+			        "Dim_Class", COUNTROWS(Dim_Class),
+			        "Dim_BookingStatus", COUNTROWS(Dim_BookingStatus),
+			        "Dim_PassengerStatus", COUNTROWS(Dim_PassengerStatus)),
+			    REMOVEFILTERS(Dim_Date), REMOVEFILTERS(Dim_Class), REMOVEFILTERS(Dim_Train), REMOVEFILTERS(Dim_Route), REMOVEFILTERS(Dim_BookingStatus), REMOVEFILTERS(Dim_PassengerStatus))
+		formatString: #,0
+		displayFolder: 10 Validation
+		lineageTag: 21d8d386-f2ae-5dca-bdc4-806dffdf8eec
+
+	/// PASS when the loaded rows equal the expected rows.
+	measure 'Row Count Status' =
+			VAR expected = SELECTEDVALUE(Ref_RowCounts[ExpectedRows])
+			RETURN IF([Model Row Count] = expected, "PASS", "FAIL")
+		displayFolder: 10 Validation
+		lineageTag: dfb130e2-1f46-5d40-a7f6-695fd948bfe2
+
+	/// Data-quality checks that passed.
+	measure 'Checks Passed' = CALCULATE(COUNTROWS(Ref_Checks), Ref_Checks[Passed] = TRUE())
+		formatString: #,0
+		displayFolder: 10 Validation
+		lineageTag: 8c03f753-b0e3-538f-9fcb-83e72703dfdb
+
+	/// Data-quality checks listed.
+	measure 'Checks Total' = COUNTROWS(Ref_Checks)
+		formatString: #,0
+		displayFolder: 10 Validation
+		lineageTag: 7bfbc40c-9237-57ad-b62a-a90beb1222a8
+
+	/// Presentation only: raw INR divided once by 1,000,000. Base KPI reconciliation uses raw INR.
+	measure 'Gross Booking Value (INR million)' = DIVIDE([Gross Booking Value], 1000000)
+		formatString: #,0.00
+		displayFolder: 11 Portfolio display (INR million)
+		lineageTag: cf05a27b-ae6f-5004-b5f5-346f8cc8be76
+
+	/// Presentation only: raw INR divided once by 1,000,000. Base KPI reconciliation uses raw INR.
+	measure 'Refunds (INR million)' = DIVIDE([Refunds], 1000000)
+		formatString: #,0.00
+		displayFolder: 11 Portfolio display (INR million)
+		lineageTag: 14221920-73c2-5c01-9d12-e569b4365582
+
+	/// Presentation only: raw INR divided once by 1,000,000. Base KPI reconciliation uses raw INR.
+	measure 'Passenger Refunds (INR million)' = DIVIDE([Refunds - Passenger Cancellations], 1000000)
+		formatString: #,0.00
+		displayFolder: 11 Portfolio display (INR million)
+		lineageTag: e7446d7e-355c-5faf-b8a3-b0a1314bbb3f
+
+	/// Presentation only: raw INR divided once by 1,000,000. Base KPI reconciliation uses raw INR.
+	measure 'System Refunds (INR million)' = DIVIDE([Refunds - System Auto-Refunds], 1000000)
+		formatString: #,0.00
+		displayFolder: 11 Portfolio display (INR million)
+		lineageTag: 9b6119e4-d187-5998-b569-7d4541ea048c
+
+	/// Presentation only: raw INR divided once by 1,000,000. Base KPI reconciliation uses raw INR.
+	measure 'Net Booking Value (INR million)' = DIVIDE([Net Booking Value], 1000000)
+		formatString: #,0.00
+		displayFolder: 11 Portfolio display (INR million)
+		lineageTag: b38be6c3-1546-5e14-9a14-610d583491c4
+
+	column Placeholder
+		dataType: int64
+		isHidden
+		lineageTag: 0ea5b3c9-453e-50bf-923e-9c649ddbcc9e
+		summarizeBy: none
+		sourceColumn: [Placeholder]
+
+	partition _Measures = calculated
+		mode: import
+		source = ROW("Placeholder", 1)
+
+	annotation PBI_ResultType = Table
+

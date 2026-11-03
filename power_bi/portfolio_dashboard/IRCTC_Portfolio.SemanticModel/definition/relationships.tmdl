@@ -1,0 +1,68 @@
+relationship 9d94b188-29a0-5c19-bf53-9cdb6536b4a6
+	fromColumn: Fact_Booking.JourneyDate
+	toColumn: Dim_Date.Date
+
+relationship 563a4178-c248-5748-ad9d-2acd5769bd0f
+	fromColumn: Fact_Booking.TrainKey
+	toColumn: Dim_Train.TrainKey
+
+relationship f5499f81-96c2-59ba-a2e3-341215857452
+	fromColumn: Fact_Booking.ClassKey
+	toColumn: Dim_Class.ClassKey
+
+relationship beaaefcb-88ce-5709-826e-03f9b84e9b91
+	fromColumn: Fact_Booking.BookingStatus
+	toColumn: Dim_BookingStatus.Status
+
+relationship 0ab41c35-db60-5895-b9f7-d84178f0e11c
+	fromColumn: Fact_Passenger.JourneyDate
+	toColumn: Dim_Date.Date
+
+relationship 8eaec00d-f95b-5467-9be5-6edde5fc420b
+	fromColumn: Fact_Passenger.TrainKey
+	toColumn: Dim_Train.TrainKey
+
+relationship 2e574d0c-8db1-59c5-9aa3-44cec5806492
+	fromColumn: Fact_Passenger.ClassKey
+	toColumn: Dim_Class.ClassKey
+
+relationship f68723ff-4ca0-55f8-8107-9947ac6faedd
+	fromColumn: Fact_Passenger.FinalStatus
+	toColumn: Dim_PassengerStatus.Status
+
+relationship 9439375a-c694-53ef-b780-584c9a389551
+	fromColumn: Fact_ClassRun.JourneyDate
+	toColumn: Dim_Date.Date
+
+relationship 77cf39e0-ae51-5782-8823-d9c9707b2b28
+	fromColumn: Fact_ClassRun.TrainKey
+	toColumn: Dim_Train.TrainKey
+
+relationship b53ed4a0-fd02-5fef-897a-f57ce3394a21
+	fromColumn: Fact_ClassRun.ClassKey
+	toColumn: Dim_Class.ClassKey
+
+relationship d1b2bebc-37ca-59e4-a609-674d32ab9abe
+	fromColumn: Fact_TrainRun.RunDate
+	toColumn: Dim_Date.Date
+
+relationship 6e1a4283-7fe7-5aed-a175-830541b14d6d
+	fromColumn: Fact_TrainRun.TrainKey
+	toColumn: Dim_Train.TrainKey
+
+relationship 5dbb9f59-db21-5fe6-9e9e-c51a73774a8d
+	fromColumn: Fact_Cancellation.JourneyDate
+	toColumn: Dim_Date.Date
+
+relationship 5a5000e5-d412-5105-8b26-3a3b00d02f8a
+	fromColumn: Fact_Cancellation.TrainKey
+	toColumn: Dim_Train.TrainKey
+
+relationship 02a6b289-87ac-5f22-b43a-ff60e80af96d
+	fromColumn: Fact_Cancellation.ClassKey
+	toColumn: Dim_Class.ClassKey
+
+relationship d2a63bd6-1b42-5760-9843-50b6f68737db
+	fromColumn: Dim_Train.RouteKey
+	toColumn: Dim_Route.RouteKey
+

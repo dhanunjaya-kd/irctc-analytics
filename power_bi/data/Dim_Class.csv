@@ -1,0 +1,7 @@
+ClassKey,ClassName,SeatsPerCoach,RacModelled,ClassOrder
+1A,First AC,24,No,1
+2A,Second AC,46,Yes,2
+3A,Third AC,64,Yes,3
+SL,Sleeper,72,Yes,4
+CC,Chair Car,78,No,5
+2S,Second Sitting,108,No,6

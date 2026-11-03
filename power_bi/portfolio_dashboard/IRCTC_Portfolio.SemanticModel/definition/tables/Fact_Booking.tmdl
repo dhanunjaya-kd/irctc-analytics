@@ -1,0 +1,71 @@
+/// Grain: one booking (201,182).
+table Fact_Booking
+	lineageTag: 3bb4472a-17ba-543e-a6bf-1c3204667dce
+
+	/// degenerate dimension
+	column BookingID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 083f867f-0df9-50d8-9669-7e7209224b7a
+		summarizeBy: none
+		sourceColumn: BookingID
+
+	column JourneyDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 70ac919c-475b-5f2f-9068-b07cc15ad8c0
+		summarizeBy: none
+		sourceColumn: JourneyDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TrainKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 08df15d0-165e-5980-b544-33bb0cfacad0
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column ClassKey
+		dataType: string
+		isHidden
+		lineageTag: f477d4cb-52b0-5f96-9db8-d2be47971e91
+		summarizeBy: none
+		sourceColumn: ClassKey
+
+	column BookingStatus
+		dataType: string
+		isHidden
+		lineageTag: 57134c47-3f02-58d6-884c-b4578877caa6
+		summarizeBy: none
+		sourceColumn: BookingStatus
+
+	column Passengers
+		dataType: int64
+		formatString: 0
+		lineageTag: acdd8ca9-45f6-5d5f-a374-d870ef359408
+		summarizeBy: none
+		sourceColumn: Passengers
+
+	/// gross fare of the booking in INR before refunds
+	column TotalFare
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 5300a2fa-7690-567a-a2c5-0a44aab74acd
+		summarizeBy: none
+		sourceColumn: TotalFare
+
+	partition Fact_Booking = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Fact_Booking.csv"), [Delimiter = ",", Columns = 7, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"BookingID", Int64.Type}, {"JourneyDate", type date}, {"TrainKey", Int64.Type}, {"ClassKey", type text}, {"BookingStatus", type text}, {"Passengers", Int64.Type}, {"TotalFare", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

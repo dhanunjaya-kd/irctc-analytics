@@ -28,3 +28,13 @@ Thumbs.db
 
 # Phase 3 scratch files (two-pass workbook builds, test logs)
 reports/phase3_work/
+
+# IRCTC current Power BI release
+**/.pbi/
+**/*.pbipcache
+**/localSettings.json
+/power_bi/IRCTC_Analytics.pbip
+/power_bi/IRCTC_Analytics.Report/
+/power_bi/IRCTC_Analytics.SemanticModel/
+/power_bi/portfolio_dashboard/IRCTC_Model_Check.pbip
+/power_bi/portfolio_dashboard/IRCTC_Model_Check.Report/

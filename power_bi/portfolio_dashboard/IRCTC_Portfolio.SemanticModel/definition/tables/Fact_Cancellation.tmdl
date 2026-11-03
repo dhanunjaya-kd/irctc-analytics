@@ -1,0 +1,96 @@
+/// Grain: one refund event (43,923). Dated by the booking's journey date (cohort basis).
+table Fact_Cancellation
+	lineageTag: 8baf1d20-a45e-5735-9a57-13533b652b03
+
+	column CancellationID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: c3c2f78a-38f8-57c0-8d16-6591785cdd76
+		summarizeBy: none
+		sourceColumn: CancellationID
+
+	column BookingID
+		dataType: int64
+		formatString: 0
+		lineageTag: 55275c7f-7ac0-5fd6-91a6-712303a457a1
+		summarizeBy: none
+		sourceColumn: BookingID
+
+	column JourneyDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: e178374b-1b8b-5f6b-b7f3-0921e9d2758b
+		summarizeBy: none
+		sourceColumn: JourneyDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TrainKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 386cb136-a664-564f-ac60-d5aa9acab95a
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column ClassKey
+		dataType: string
+		isHidden
+		lineageTag: 15fe50f6-e3b6-5620-99db-70342e370713
+		summarizeBy: none
+		sourceColumn: ClassKey
+
+	/// Passenger or System (auto-refund of an uncleared waitlist)
+	column CancellationType
+		dataType: string
+		lineageTag: 55537ae3-7ba3-5efe-875a-dabd704d65e3
+		summarizeBy: none
+		sourceColumn: CancellationType
+
+	column StatusAtCancellation
+		dataType: string
+		lineageTag: 8257f52a-d05d-59a4-9458-85edb8b0255f
+		summarizeBy: none
+		sourceColumn: StatusAtCancellation
+
+	column CancelledPassengers
+		dataType: int64
+		formatString: 0
+		lineageTag: ef8b655c-a65b-596c-8e64-1ff45b3d51e2
+		summarizeBy: none
+		sourceColumn: CancelledPassengers
+
+	column OriginalFare
+		dataType: double
+		formatString: #,0.00
+		lineageTag: fd0b334b-5c7c-5ad8-bdbc-c59f92c9a56b
+		summarizeBy: none
+		sourceColumn: OriginalFare
+
+	column CancellationCharge
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 0eb77cf8-48da-548b-8a58-9a6700921b75
+		summarizeBy: none
+		sourceColumn: CancellationCharge
+
+	column RefundAmount
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 20e9d8bd-5077-5f2b-a0a8-600de8749882
+		summarizeBy: none
+		sourceColumn: RefundAmount
+
+	partition Fact_Cancellation = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Fact_Cancellation.csv"), [Delimiter = ",", Columns = 11, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"CancellationID", Int64.Type}, {"BookingID", Int64.Type}, {"JourneyDate", type date}, {"TrainKey", Int64.Type}, {"ClassKey", type text}, {"CancellationType", type text}, {"StatusAtCancellation", type text}, {"CancelledPassengers", Int64.Type}, {"OriginalFare", type number}, {"CancellationCharge", type number}, {"RefundAmount", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

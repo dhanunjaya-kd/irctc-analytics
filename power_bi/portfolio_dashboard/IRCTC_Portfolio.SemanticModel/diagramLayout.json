@@ -1,0 +1,243 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 0,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 1119.6340874906912,
+            "y": 669.652467521095
+          },
+          "nodeIndex": "_Measures",
+          "nodeLineageTag": "65f6a201-3f78-50b9-9c52-47d639f0b835",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 245.21177845634753,
+            "y": 1461.30493504219
+          },
+          "nodeIndex": "Dim_BookingStatus",
+          "nodeLineageTag": "e1feae54-ac65-53d7-b259-eb8c460fd520",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 598.17636960213338,
+            "y": 979.27603985004487
+          },
+          "nodeIndex": "Dim_Class",
+          "nodeLineageTag": "0a4e7889-14ca-50f9-9b5b-25094d513d04",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 426.95605317070425,
+            "y": 527.87569572513644
+          },
+          "nodeIndex": "Dim_Date",
+          "nodeLineageTag": "1345d3d1-c161-5e3b-82ac-9f3f1a4c2a68",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 885.634087490691,
+            "y": 1005.265428319957
+          },
+          "nodeIndex": "Dim_PassengerStatus",
+          "nodeLineageTag": "d3aae294-0542-58d5-a32d-3bc3d3052719",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 434.43045229171895,
+            "y": -50
+          },
+          "nodeIndex": "Dim_Route",
+          "nodeLineageTag": "10d4850f-56d8-588b-a035-dce3c9b61dbd",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 336.44028800025029,
+            "y": 250.63633191290478
+          },
+          "nodeIndex": "Dim_Train",
+          "nodeLineageTag": "d22827de-08be-529b-b215-aa2f76ca0495",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 311.18287797140874,
+            "y": 1163.0302718145588
+          },
+          "nodeIndex": "Fact_Booking",
+          "nodeLineageTag": "3bb4472a-17ba-543e-a6bf-1c3204667dce",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 713.93198966507452,
+            "y": 267.95242950369243
+          },
+          "nodeIndex": "Fact_Cancellation",
+          "nodeLineageTag": "8baf1d20-a45e-5735-9a57-13533b652b03",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 141.27336185886867,
+            "y": 837.78140475243549
+          },
+          "nodeIndex": "Fact_ClassRun",
+          "nodeLineageTag": "42607bfd-7191-592a-a31a-39455500c152",
+          "size": {
+            "height": 272,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 885.16452153725857,
+            "y": 657.72297761323625
+          },
+          "nodeIndex": "Fact_Passenger",
+          "nodeLineageTag": "d5dced39-3957-52fa-96eb-7c3c862021e4",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": 497.6404608115547
+          },
+          "nodeIndex": "Fact_TrainRun",
+          "nodeLineageTag": "fd7c32b4-4af5-57cf-87cc-da253178231c",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1403.6340874906912,
+            "y": 755.652467521095
+          },
+          "nodeIndex": "KPI Selector",
+          "nodeLineageTag": "6211c650-2b16-5e5c-be1f-2bec154208e2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1687.6340874906912,
+            "y": 707.652467521095
+          },
+          "nodeIndex": "Ref_Checks",
+          "nodeLineageTag": "9150dfd7-4646-50ec-a719-a7a0e20a0e4d",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1971.6340874906912,
+            "y": 719.652467521095
+          },
+          "nodeIndex": "Ref_KPI",
+          "nodeLineageTag": "53ab73dc-5f3f-5fcf-918c-bbc00b178d51",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2255.6340874906909,
+            "y": 707.652467521095
+          },
+          "nodeIndex": "Ref_ModelTables",
+          "nodeLineageTag": "38beba61-aae5-58f4-83b7-53d6598a321e",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 2539.6340874906909,
+            "y": 731.652467521095
+          },
+          "nodeIndex": "Ref_RowCounts",
+          "nodeLineageTag": "e009abf0-c7e8-554c-aa84-9fb8561fb44a",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}

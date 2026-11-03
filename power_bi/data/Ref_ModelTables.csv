@@ -1,0 +1,16 @@
+ModelTable,Role,SourceFile,Rows,DataOrigin,Description
+Dim_Date,dimension,power_bi/data/Dim_Date.csv,730,DERIVED (from SYNTHETIC cleaned data),"Journey calendar, 2024-09-01 to 2026-08-31 (730 days, contiguous). Marked as the date table."
+Dim_Train,dimension,power_bi/data/Dim_Train.csv,52,DERIVED (from SYNTHETIC cleaned data),Train (52). Related to Dim_Route (snowflake) so that route filters reach every fact.
+Dim_Route,dimension,power_bi/data/Dim_Route.csv,40,DERIVED (from SYNTHETIC cleaned data),Directional route (40) with origin and destination.
+Dim_Class,dimension,power_bi/data/Dim_Class.csv,6,DERIVED (from SYNTHETIC cleaned data),Travel class (6) with real seats per coach.
+Dim_BookingStatus,dimension,power_bi/data/Dim_BookingStatus.csv,5,DERIVED (from SYNTHETIC cleaned data),"Booking status roll-up values (Confirmed, RAC, Waitlisted, Cancelled, Mixed) in logical order."
+Dim_PassengerStatus,dimension,power_bi/data/Dim_PassengerStatus.csv,4,DERIVED (from SYNTHETIC cleaned data),"Passenger final-status values (Confirmed, RAC, Waitlisted, Cancelled) in logical order."
+Fact_Booking,fact,power_bi/data/Fact_Booking.csv,201182,DERIVED (from SYNTHETIC cleaned data),"Grain: one booking (201,182)."
+Fact_Passenger,fact,power_bi/data/Fact_Passenger.csv,405200,DERIVED (from SYNTHETIC cleaned data),"Grain: one passenger on a booking (405,200). Status is tracked per passenger."
+Fact_ClassRun,fact,power_bi/data/Fact_ClassRun.csv,2285,DERIVED (from SYNTHETIC cleaned data),"Grain: one SIMULATED train-class run (2,285). Capacity is simulated."
+Fact_TrainRun,fact,power_bi/data/Fact_TrainRun.csv,768,DERIVED (from SYNTHETIC cleaned data),Grain: one SIMULATED train run (768). Delays are simulated.
+Fact_Cancellation,fact,power_bi/data/Fact_Cancellation.csv,43923,DERIVED (from SYNTHETIC cleaned data),"Grain: one refund event (43,923). Dated by the booking's journey date (cohort basis)."
+Ref_KPI,reference,power_bi/data/Ref_KPI.csv,31,DERIVED (from SYNTHETIC cleaned data),reports/kpi_reference_values.csv (31 approved KPI reference values) with the reconciliation tolerance of docs/KPI_definitions.md section 1.8. Disconnected.
+Ref_RowCounts,reference,power_bi/data/Ref_RowCounts.csv,11,DERIVED (from SYNTHETIC cleaned data),Expected row count of each model table (Phase 2 validated counts). Disconnected.
+Ref_Checks,reference,power_bi/data/Ref_Checks.csv,110,DERIVED (from SYNTHETIC cleaned data),Data-quality check results: Phase 4 PostgreSQL checks (PostgreSQL 16 build) and Phase 6 model checks (executed in Python). Disconnected.
+Ref_ModelTables,reference,power_bi/data/Ref_ModelTables.csv,15,DERIVED (from SYNTHETIC cleaned data),Source / derived indicator: every model table is DERIVED from SYNTHETIC cleaned data. Disconnected.

@@ -1,0 +1,8 @@
+/// Folder that contains the exported model CSV files (power_bi/data). Change this ONE parameter after opening the project.
+expression DataFolder = "C:\Projects\irctc-analytics\power_bi\data" meta [IsParameterQuery = true, Type = "Text", IsParameterQueryRequired = true]
+	lineageTag: 20c7e7aa-2d3b-5f62-88f9-5e26f57a88f5
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

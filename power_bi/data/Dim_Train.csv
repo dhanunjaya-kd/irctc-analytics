@@ -1,0 +1,53 @@
+TrainKey,TrainNumber,TrainName,TrainType,RunDays,RouteKey
+1,S1001,Delhi–Madurai Superfast 1,Superfast,NNNYNNY,1
+2,S1002,Madurai–Delhi Superfast 1,Superfast,NYYNNNN,2
+3,S1003,Delhi–Madurai Express 2,Express,YYYYNYN,1
+4,S1004,Madurai–Delhi Express 2,Express,NNYNYNY,2
+5,S1005,Delhi–Dibrugarh Superfast 1,Superfast,YYYYYYY,3
+6,S1006,Dibrugarh–Delhi Superfast 1,Superfast,NNNNNYN,4
+7,S1007,Delhi–Dibrugarh Express 2,Express,YNNYNNY,3
+8,S1008,Dibrugarh–Delhi Express 2,Express,YNYYNNN,4
+9,S1009,Jaipur–Bhopal Express,Express,NYNYYYY,5
+10,S1010,Bhopal–Jaipur Express,Express,NYNNNNN,6
+11,S1011,Jaipur–Raipur Superfast,Superfast,NNYNYNN,7
+12,S1012,Raipur–Jaipur Superfast,Superfast,YYYYYYY,8
+13,S1013,Lucknow–Mumbai Premium 1,Premium,NYYNNNY,9
+14,S1014,Mumbai–Lucknow Premium 1,Premium,NNYNYNY,10
+15,S1015,Lucknow–Mumbai Express 2,Express,YNYNYNN,9
+16,S1016,Mumbai–Lucknow Express 2,Express,NYNNYNY,10
+17,S1017,Chandigarh–Visakhapatnam Express,Express,NNYNNNN,11
+18,S1018,Visakhapatnam–Chandigarh Express,Express,NNYYYYY,12
+19,S1019,Amritsar–Indore Superfast,Superfast,YYYYYYY,13
+20,S1020,Indore–Amritsar Superfast,Superfast,NYNNNNN,14
+21,S1021,Dehradun–Pune Express,Express,YYYYNYN,15
+22,S1022,Pune–Dehradun Express,Express,YYYYYYY,16
+23,S1023,Varanasi–Ahmedabad Express,Express,YYYYYYY,17
+24,S1024,Ahmedabad–Varanasi Express,Express,YYYYYYY,18
+25,S1025,Varanasi–Surat Express,Express,YYYYYYY,19
+26,S1026,Surat–Varanasi Express,Express,YNNNNYY,20
+27,S1027,Jodhpur–Bengaluru Express,Express,NNNYYYN,21
+28,S1028,Bengaluru–Jodhpur Express,Express,NYYYYYN,22
+29,S1029,Mumbai–Bengaluru Express 1,Express,NYYNNNY,23
+30,S1030,Bengaluru–Mumbai Express 1,Express,YYYNNNN,24
+31,S1031,Mumbai–Bengaluru Express 2,Express,NYNNNNN,23
+32,S1032,Bengaluru–Mumbai Express 2,Express,YNNNNNN,24
+33,S1033,Ahmedabad–Chennai Express 1,Express,NYYNYYY,25
+34,S1034,Chennai–Ahmedabad Express 1,Express,YNNNNNN,26
+35,S1035,Ahmedabad–Chennai Express 2,Express,YNNNNNN,25
+36,S1036,Chennai–Ahmedabad Express 2,Express,YYYYYYY,26
+37,S1037,Madgaon–Madurai Superfast,Superfast,YYNNNYN,27
+38,S1038,Madurai–Madgaon Superfast,Superfast,NNYNNYN,28
+39,S1039,Nagpur–Thiruvananthapuram Express,Express,YYYYYYY,29
+40,S1040,Thiruvananthapuram–Nagpur Express,Express,NNNNYNY,30
+41,S1041,Bhopal–Guwahati Express,Express,YNNNNNN,31
+42,S1042,Guwahati–Bhopal Express,Express,NNYNYYN,32
+43,S1043,Hyderabad–Kolkata Express 1,Express,NNYYYNN,33
+44,S1044,Kolkata–Hyderabad Express 1,Express,YNYNYYY,34
+45,S1045,Hyderabad–Kolkata Superfast 2,Superfast,YNNNNNN,33
+46,S1046,Kolkata–Hyderabad Superfast 2,Superfast,YNYNYNN,34
+47,S1047,Kochi–Bhubaneswar Express,Express,YNYYYYN,35
+48,S1048,Bhubaneswar–Kochi Express,Express,YYYYYYY,36
+49,S1049,Coimbatore–Ranchi Express,Express,NYNNNNN,37
+50,S1050,Ranchi–Coimbatore Express,Express,YYYNYYN,38
+51,S1051,Vijayawada–Patna Express,Express,YYYYYYY,39
+52,S1052,Patna–Vijayawada Express,Express,NNNNNYN,40

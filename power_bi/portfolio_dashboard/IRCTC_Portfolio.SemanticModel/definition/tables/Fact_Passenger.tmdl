@@ -1,0 +1,81 @@
+/// Grain: one passenger on a booking (405,200). Status is tracked per passenger.
+table Fact_Passenger
+	lineageTag: d5dced39-3957-52fa-96eb-7c3c862021e4
+
+	column PassengerID
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: b5577653-7ed7-5e34-b6be-f4e57c7d76c4
+		summarizeBy: none
+		sourceColumn: PassengerID
+
+	column BookingID
+		dataType: int64
+		formatString: 0
+		lineageTag: 3bac8d74-4bd8-5452-a01d-71b41b494bfc
+		summarizeBy: none
+		sourceColumn: BookingID
+
+	column JourneyDate
+		dataType: dateTime
+		formatString: yyyy-mm-dd
+		lineageTag: 2c74de2f-aa89-5c3d-89ea-fe620a8a0d5e
+		summarizeBy: none
+		sourceColumn: JourneyDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TrainKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ba7949ba-20eb-558a-860d-929138601bd6
+		summarizeBy: none
+		sourceColumn: TrainKey
+
+	column ClassKey
+		dataType: string
+		isHidden
+		lineageTag: 6dbb8880-e513-5070-98b9-cbc8b507c7b8
+		summarizeBy: none
+		sourceColumn: ClassKey
+
+	column AgeBand
+		dataType: string
+		lineageTag: a8021282-9b73-5611-9748-cc6aba6b4bc6
+		summarizeBy: none
+		sourceColumn: AgeBand
+
+	column InitialStatus
+		dataType: string
+		lineageTag: 1cc1ab99-77f3-5b87-b2fe-505869db8d48
+		summarizeBy: none
+		sourceColumn: InitialStatus
+
+	column FinalStatus
+		dataType: string
+		isHidden
+		lineageTag: 6126bb8a-e959-583f-83e6-b6a03b3f8d76
+		summarizeBy: none
+		sourceColumn: FinalStatus
+
+	column FareAmount
+		dataType: double
+		formatString: #,0.00
+		lineageTag: 65d8ee51-d933-559c-8ed5-1b3d717a6527
+		summarizeBy: none
+		sourceColumn: FareAmount
+
+	partition Fact_Passenger = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Fact_Passenger.csv"), [Delimiter = ",", Columns = 9, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"PassengerID", Int64.Type}, {"BookingID", Int64.Type}, {"JourneyDate", type date}, {"TrainKey", Int64.Type}, {"ClassKey", type text}, {"AgeBand", type text}, {"InitialStatus", type text}, {"FinalStatus", type text}, {"FareAmount", type number}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

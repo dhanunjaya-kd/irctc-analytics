@@ -1,0 +1,32 @@
+KpiKey,KpiName,ReferenceValue,Unit,Tolerance
+total_bookings,Total Bookings,201182.0,bookings,0.0
+total_passengers,Total Passengers,405200.0,passengers,0.0
+confirmed_bookings,Confirmed Booking Count (all passengers Confirmed),146020.0,bookings,0.0
+mixed_bookings,Mixed Booking Count,4625.0,bookings,0.0
+cancelled_bookings,Cancelled Booking Count,26619.0,bookings,0.0
+cancelled_passengers,Cancelled Passengers,55980.0,passengers,0.0
+passenger_cancellation_rate,Cancellation Rate (passenger-based),0.1381539980256663,share,5e-05
+booking_cancellation_rate,Booking Cancellation Rate (companion),0.1323130299927429,share,5e-05
+gross_value,Gross Booking Value,612966953.0,INR,0.005
+refund_total,Refund Amount,107083527.0,INR,0.005
+refund_passenger,Refund Amount: Passenger events,71884437.0,INR,0.005
+refund_system,Refund Amount: System events,35199090.0,INR,0.005
+retained_charges,Retained Cancellation Charges,9656744.0,INR,0.005
+net_value,Net Booking Value,505883426.0,INR,0.005
+avg_fare_per_passenger,Average Fare per passenger,1512.751611549852,INR,0.005
+avg_fare_per_booking,Average Fare per booking (secondary),3046.828011452317,INR,0.005
+wl_demand,Waiting-List Demand (initially waitlisted passengers),36876.0,passengers,0.0
+wl_cleared,Waitlisted passengers later Confirmed or RAC,7087.0,passengers,0.0
+wl_clearance_rate,Waitlist Clearance Rate,0.1921846187222041,share,5e-05
+wl_uncleared,Uncleared Waitlist Passengers (final Waitlisted),24200.0,passengers,0.0
+seat_supply,Available Seats (capacity),426384.0,seats,0.0
+booked_seats,Booked Seats (Confirmed + 0.5 x RAC),313345.5,seat-equivalents,0.0001
+occupancy,Seat Occupancy %,0.7348903805020827,share,5e-05
+confirmed_occupancy,Confirmed Occupancy %,0.7075101317122594,share,5e-05
+waitlist_pressure,Waitlist Pressure %,0.0567563510825922,share,5e-05
+simulated_runs,Simulated train runs,768.0,runs,0.0
+bookings_per_run,Bookings per Simulated Run,261.9557291666667,bookings/run,0.0001
+passengers_per_run,Passengers per Simulated Run,527.6041666666666,passengers/run,0.0001
+otp,On-Time Performance %,0.7476510067114094,share,5e-05
+avg_delay,Average Delay (early = 0),19.02013422818792,minutes,0.0001
+delayed_runs,Delayed Train Runs,188.0,runs,0.0

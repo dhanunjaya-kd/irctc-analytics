@@ -1,0 +1,41 @@
+/// Expected row count of each model table (Phase 2 validated counts). Disconnected.
+table Ref_RowCounts
+	lineageTag: e009abf0-c7e8-554c-aa84-9fb8561fb44a
+
+	column ModelTable
+		dataType: string
+		lineageTag: 3f6d14fd-6403-5d8f-b159-e07e52315dbb
+		summarizeBy: none
+		sourceColumn: ModelTable
+
+	column SourceTable
+		dataType: string
+		lineageTag: 48fa0df0-6002-5e1e-bf60-6e55c4f03d9d
+		summarizeBy: none
+		sourceColumn: SourceTable
+
+	column ExpectedRows
+		dataType: int64
+		formatString: #,0
+		lineageTag: 833cc23a-2d0e-53a5-8713-79e5c04ef30a
+		summarizeBy: none
+		sourceColumn: ExpectedRows
+
+	column Note
+		dataType: string
+		lineageTag: 4893f58d-efd6-59b7-aeb3-d48866c1983a
+		summarizeBy: none
+		sourceColumn: Note
+
+	partition Ref_RowCounts = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Ref_RowCounts.csv"), [Delimiter = ",", Columns = 4, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ModelTable", type text}, {"SourceTable", type text}, {"ExpectedRows", Int64.Type}, {"Note", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

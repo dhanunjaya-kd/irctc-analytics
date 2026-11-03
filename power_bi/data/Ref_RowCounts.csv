@@ -1,0 +1,12 @@
+ModelTable,SourceTable,ExpectedRows,Note
+Fact_Booking,bookings,201182,
+Fact_Passenger,booking_passengers,405200,
+Fact_Cancellation,cancellations,43923,
+Fact_ClassRun,seat_capacity,2285,
+Fact_TrainRun,train_operations,768,
+Dim_Train,trains,52,
+Dim_Route,routes,40,
+Dim_Date,calendar,730,Journey window 2024-09-01 to 2026-08-31 of the 975-day calendar (the other days hold no journeys)
+Dim_Class,(reference),6,Six travel classes
+Dim_BookingStatus,(reference),5,"Confirmed, RAC, Waitlisted, Cancelled, Mixed"
+Dim_PassengerStatus,(reference),4,"Confirmed, RAC, Waitlisted, Cancelled"

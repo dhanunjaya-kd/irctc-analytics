@@ -1,0 +1,61 @@
+/// Directional route (40) with origin and destination.
+table Dim_Route
+	lineageTag: 10d4850f-56d8-588b-a035-dce3c9b61dbd
+
+	column RouteKey
+		dataType: int64
+		isKey
+		formatString: 0
+		lineageTag: 9f225dc0-fe2f-5130-96c8-ef2c5067b759
+		summarizeBy: none
+		sourceColumn: RouteKey
+
+	column RouteName
+		dataType: string
+		lineageTag: 6a8fe537-e7e6-5cb8-b0f2-aec073cdc6ef
+		summarizeBy: none
+		sourceColumn: RouteName
+
+	column DistanceKm
+		dataType: double
+		formatString: #,0.0
+		lineageTag: 5628cf94-1c06-5e97-8a97-970e4dbbde84
+		summarizeBy: none
+		sourceColumn: DistanceKm
+
+	column OriginCode
+		dataType: string
+		lineageTag: 100038ba-ec9c-5784-92a7-bbd92d1abc8a
+		summarizeBy: none
+		sourceColumn: OriginCode
+
+	column OriginCity
+		dataType: string
+		lineageTag: ef90157b-f02a-5438-9fb9-efa1d540f762
+		summarizeBy: none
+		sourceColumn: OriginCity
+
+	column DestinationCode
+		dataType: string
+		lineageTag: fb28eaf5-268a-5203-aed6-330be4d8cfa3
+		summarizeBy: none
+		sourceColumn: DestinationCode
+
+	column DestinationCity
+		dataType: string
+		lineageTag: 106636d6-be23-52bf-9d1c-dc56035754a4
+		summarizeBy: none
+		sourceColumn: DestinationCity
+
+	partition Dim_Route = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_Route.csv"), [Delimiter = ",", Columns = 7, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"RouteKey", Int64.Type}, {"RouteName", type text}, {"DistanceKm", type number}, {"OriginCode", type text}, {"OriginCity", type text}, {"DestinationCode", type text}, {"DestinationCity", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,25 @@
+/// Disconnected selector for the Executive Summary trend (rate KPIs only, so one axis is valid).
+table 'KPI Selector'
+	lineageTag: 6211c650-2b16-5e5c-be1f-2bec154208e2
+
+	column 'KPI Name'
+		dataType: string
+		lineageTag: ed096f45-be69-5fb9-a0a9-2f1fc7a09902
+		summarizeBy: none
+		sourceColumn: [KPI Name]
+		sortByColumn: 'KPI Order'
+
+	column 'KPI Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f99685ce-2f85-518a-87ad-cf838ed2c639
+		summarizeBy: none
+		sourceColumn: [KPI Order]
+
+	partition 'KPI Selector' = calculated
+		mode: import
+		source = DATATABLE("KPI Name", STRING, "KPI Order", INTEGER, {{"Seat Occupancy", 1}, {"Passenger Cancellation Rate", 2}, {"Waitlist Clearance Rate", 3}, {"On-Time Performance", 4}})
+
+	annotation PBI_ResultType = Table
+

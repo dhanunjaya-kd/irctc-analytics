@@ -1,0 +1,53 @@
+/// Source / derived indicator: every model table is DERIVED from SYNTHETIC cleaned data. Disconnected.
+table Ref_ModelTables
+	lineageTag: 38beba61-aae5-58f4-83b7-53d6598a321e
+
+	column ModelTable
+		dataType: string
+		lineageTag: 36575f2b-d4ff-5243-a72c-d04cb086a4f8
+		summarizeBy: none
+		sourceColumn: ModelTable
+
+	column Role
+		dataType: string
+		lineageTag: 57d0695c-c6ea-58de-a3ad-c5104d8efb28
+		summarizeBy: none
+		sourceColumn: Role
+
+	column SourceFile
+		dataType: string
+		lineageTag: 5c0bfeb8-a880-5dd3-a081-0182f2bf470a
+		summarizeBy: none
+		sourceColumn: SourceFile
+
+	column Rows
+		dataType: int64
+		formatString: #,0
+		lineageTag: c2c3ae93-20f3-5ec7-b8f8-079b19ab16bc
+		summarizeBy: none
+		sourceColumn: Rows
+
+	column DataOrigin
+		dataType: string
+		lineageTag: 3828a46c-e993-586a-b086-618cc824a716
+		summarizeBy: none
+		sourceColumn: DataOrigin
+
+	column Description
+		dataType: string
+		lineageTag: 87ca2d7b-6ef3-5324-9d8d-ff4388fd29b9
+		summarizeBy: none
+		sourceColumn: Description
+
+	partition Ref_ModelTables = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Ref_ModelTables.csv"), [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"ModelTable", type text}, {"Role", type text}, {"SourceFile", type text}, {"Rows", Int64.Type}, {"DataOrigin", type text}, {"Description", type text}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

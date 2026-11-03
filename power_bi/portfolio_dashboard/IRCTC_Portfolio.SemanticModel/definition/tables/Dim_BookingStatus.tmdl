@@ -1,0 +1,32 @@
+/// Booking status roll-up values (Confirmed, RAC, Waitlisted, Cancelled, Mixed) in logical order.
+table Dim_BookingStatus
+	lineageTag: e1feae54-ac65-53d7-b259-eb8c460fd520
+
+	column Status
+		dataType: string
+		isKey
+		lineageTag: efd4d842-c1dd-5b8b-af96-a8c335ab3ca1
+		summarizeBy: none
+		sourceColumn: Status
+		sortByColumn: StatusOrder
+
+	column StatusOrder
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: ad68cb9f-9cba-556b-b214-a0e47aaba958
+		summarizeBy: none
+		sourceColumn: StatusOrder
+
+	partition Dim_BookingStatus = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\Dim_BookingStatus.csv"), [Delimiter = ",", Columns = 2, Encoding = 65001, QuoteStyle = QuoteStyle.Csv]),
+				    Headers = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				    Typed = Table.TransformColumnTypes(Headers, {{"Status", type text}, {"StatusOrder", Int64.Type}}, "en-US")
+				in
+				    Typed
+
+	annotation PBI_ResultType = Table
+

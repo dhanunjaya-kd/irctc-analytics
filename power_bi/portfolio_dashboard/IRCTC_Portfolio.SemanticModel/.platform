@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "IRCTC_Portfolio"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "ae00e368-5c21-4ef4-874d-2362eb30933d"
+  }
+}
