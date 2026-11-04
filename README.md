@@ -1,14 +1,15 @@
 # IRCTC Analytics Portfolio
 
-An independent data-analysis portfolio covering passenger demand, booking value, cancellations, capacity and punctuality across Excel/Google Sheets, PostgreSQL, Python and Power BI.
+An independent data-analysis portfolio covering passenger demand, booking value, cancellations, capacity and punctuality across Excel/Google Sheets, PostgreSQL, Python, Power BI and Tableau.
 
 **All project data is synthetic.** The sample contains **768 simulated runs sampled from 19,708 scheduled runs**. These are not actual IRCTC or Indian Railways business results, network-wide estimates or forecasts. This project is not affiliated with either organization.
 
 ![Power BI overview](power_bi/screenshots/01_overview.png)
 
-## Explore the report
+## Explore the reports
 
-- [Six-page screenshot gallery](power_bi/screenshots/README.md)
+- [Interactive Tableau workbook](tableau/portfolio_dashboard/IRCTC_Portfolio_KPI_View.twbx) · [Tableau screenshot gallery](tableau/screenshots/README.md)
+- [Power BI screenshot gallery](power_bi/screenshots/README.md)
 - [Original Power BI PDF export](power_bi/screenshots/IRCTC_Portfolio.pdf)
 - [Open and refresh the editable Power BI project](power_bi/README.md)
 - [Power BI milestone and verification evidence](docs/phase6_powerbi.md)
@@ -23,9 +24,9 @@ The dashboard covers an executive overview, demand and capacity, booking value, 
 | PostgreSQL | Milestone published at `a6914b8` | No new SQL execution is claimed by this release |
 | Python analytics | Published at `237dd83`; Windows execution subsequently reported 31 tests passing, 111/111 validation checks, 31/31 KPI checks and 960/960 monthly checks | Later regenerated outputs have local differences and are not bundled into the Power BI release |
 | Power BI | Six populated Desktop pages and authentic PDF/PNG exports; 31 reconciled KPIs and all 11 table row-count statuses shown as PASS; screenshots published at `b287162` | Final refresh, interaction, save/reopen and fresh-clone checks need explicit verification records |
-| Tableau | Local build instructions, calculated-field files and wireframes exist | Workbook creation, Desktop validation and publication are not established |
+| Tableau | Six dashboards published in a packaged workbook with its data extract. Tableau Public shows 31/31 KPI checks and 11/11 row-count checks passing. | Download the `.twbx` and open it in Tableau Public to explore the dashboards. |
 
-The current editable Power BI deliverable is `power_bi/portfolio_dashboard/IRCTC_Portfolio.pbip`. Earlier generated report copies are not the supported entry point. The release preparation process does not stage those old copies or unrelated Python/Tableau work.
+The current editable Power BI deliverable is `power_bi/portfolio_dashboard/IRCTC_Portfolio.pbip`. Earlier generated report copies are not the supported entry point.
 
 ## What the analysis demonstrates
 
@@ -63,4 +64,4 @@ All sample patterns depend on the simulation design. Ratios use their defined nu
 
 Power BI caches, local settings, backups and credentials are excluded. Opening a clone requires setting the `DataFolder` parameter to that clone's `power_bi/data` folder and refreshing; the saved model currently uses an absolute Windows path. See the Power BI setup guide before opening on another computer.
 
-The screenshot export proves the appearance of the visible report pages. It does not prove every measure, filter interaction or reproducibility on a fresh machine. Tableau, synced slicers, drill-through and report-page tooltips are not claimed complete.
+The screenshot export proves the appearance of the visible report pages. It does not prove every measure, filter interaction or reproducibility on a fresh machine. Power BI synced slicers, drill-through and report-page tooltips have not been verified.
